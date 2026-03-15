@@ -7,7 +7,8 @@ import { supabase } from '@/lib/supabase'
 
 const FREE_LIMIT = 2
 const STORAGE_KEY = 'clearsign_reviews_used'
-const BASE_COUNT = 47 // Social proof floor
+const CREDIBILITY_BASE = 43  // shown while real count < 20
+const CREDIBILITY_THRESHOLD = 20
 
 const UPLOAD_STEPS = [
   'Uploading your contract…',
@@ -92,7 +93,8 @@ function ContractsCounter() {
       const { count: c } = await supabase
         .from('contracts')
         .select('*', { count: 'exact', head: true })
-      const total = BASE_COUNT + (c ?? 0)
+      const real = c ?? 0
+      const total = real < CREDIBILITY_THRESHOLD ? real + CREDIBILITY_BASE : real
       if (prevCount.current !== null && total !== prevCount.current) {
         setAnimated(true)
         setTimeout(() => setAnimated(false), 600)
@@ -108,7 +110,7 @@ function ContractsCounter() {
   return (
     <section className="px-6 py-20 bg-white border-t border-slate-100">
       <div className="max-w-md mx-auto text-center">
-        <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">Live</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">Real-time</p>
         <div
           className={`transition-transform duration-300 ${animated ? 'scale-110' : 'scale-100'}`}
         >
@@ -382,7 +384,7 @@ export default function Home() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-slate-800 font-bold text-xl mb-1">Drop your contract here</p>
+                  <p className="text-slate-800 font-bold text-xl mb-1">Drop your contract here to get started</p>
                   <p className="text-slate-400 text-sm">PDF files only &middot; Drag and drop or click to browse</p>
                 </div>
                 <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-xl text-base transition-colors shadow-sm">
