@@ -40,3 +40,13 @@ export type Analysis = {
     suggestion: string
   }[]
 }
+
+export type Profile = {
+  id: string
+  email: string | null
+  plan: 'free' | 'subscription' | 'per_review'
+  credits: number
+  stripe_customer_id: string | null
+  stripe_subscription_id: string | null
+  created_at: string
+}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { supabaseAdmin, type Analysis } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -16,6 +17,31 @@ export async function POST(req: NextRequest) {
     if (!file.name.endsWith('.pdf')) {
       return NextResponse.json({ error: 'Only PDF files are supported.' }, { status: 400 })
     }
+
+    // Check if user is authenticated and gate on credits/plan
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    let userId: string | null = null
+
+    if (user) {
+      userId = user.id
+      const db = supabaseAdmin()
+      const { data: profile } = await db
+        .from('profiles')
+        .select('plan, credits')
+        .eq('id', user.id)
+        .single()
+
+      // Subscription = unlimited; per_review needs credits; free = blocked server-side
+      if (!profile || profile.plan === 'free') {
+        return NextResponse.json({ error: 'upgrade_required' }, { status: 402 })
+      }
+      if (profile.plan === 'per_review' && profile.credits <= 0) {
+        return NextResponse.json({ error: 'no_credits' }, { status: 402 })
+      }
+    }
+    // Anonymous users are gated client-side via localStorage; no server check needed
 
     // Extract text from PDF
     const arrayBuffer = await file.arrayBuffer()
@@ -95,6 +121,7 @@ Return only valid JSON, no markdown.`,
         file_text: fileText.slice(0, 10_000), // store a preview
         risk_score: analysis.risk_score,
         analysis,
+        user_id: userId,
       })
       .select('id')
       .single()
@@ -114,6 +141,21 @@ Return only valid JSON, no markdown.`,
       }))
 
       await db.from('clauses').insert(clauseRows)
+    }
+
+    // Decrement credits for per_review users
+    if (userId) {
+      const { data: profile } = await db
+        .from('profiles')
+        .select('plan, credits')
+        .eq('id', userId)
+        .single()
+
+      if (profile?.plan === 'per_review') {
+        await db.from('profiles')
+          .update({ credits: Math.max(0, profile.credits - 1) })
+          .eq('id', userId)
+      }
     }
 
     return NextResponse.json({ id: contract.id, analysis })

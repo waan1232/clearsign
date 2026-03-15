@@ -2,8 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { PaywallModal } from '@/components/PaywallModal'
 import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/browser'
+import type { Session, User } from '@supabase/supabase-js'
 
 const FREE_LIMIT = 2
 const STORAGE_KEY = 'clearsign_reviews_used'
@@ -138,12 +141,25 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null)
   const [showPaywall, setShowPaywall] = useState(false)
   const [reviewsUsed, setReviewsUsed] = useState(0)
+  const [user, setUser] = useState<User | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
   useEffect(() => {
     const stored = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
     setReviewsUsed(stored)
+
+    // Load auth state
+    const supabaseBrowser = createClient()
+    supabaseBrowser.auth.getUser().then(
+      (result: { data: { user: User | null } }) => setUser(result.data.user)
+    )
+    const { data: { subscription } } = supabaseBrowser.auth.onAuthStateChange(
+      (_event: string, session: Session | null) => {
+        setUser(session?.user ?? null)
+      }
+    )
+    return () => subscription.unsubscribe()
   }, [])
 
   async function handleFile(file: File) {
@@ -151,10 +167,14 @@ export default function Home() {
       setError('Please upload a PDF file.')
       return
     }
-    const used = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
-    if (used >= FREE_LIMIT) {
-      setShowPaywall(true)
-      return
+
+    // Logged-in users are gated server-side; anonymous users use localStorage
+    if (!user) {
+      const used = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
+      if (used >= FREE_LIMIT) {
+        setShowPaywall(true)
+        return
+      }
     }
     setError(null)
     setIsUploading(true)
@@ -166,10 +186,19 @@ export default function Home() {
         const data = await res.json().catch(() => ({}))
         throw new Error(data.error || 'Something went wrong. Please try again.')
       }
-      const { id } = await res.json()
-      const newCount = used + 1
-      localStorage.setItem(STORAGE_KEY, String(newCount))
-      setReviewsUsed(newCount)
+      const data = await res.json()
+      if (res.status === 402) {
+        setIsUploading(false)
+        setShowPaywall(true)
+        return
+      }
+      const { id } = data
+      if (!user) {
+        const used = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
+        const newCount = used + 1
+        localStorage.setItem(STORAGE_KEY, String(newCount))
+        setReviewsUsed(newCount)
+      }
       router.push(`/review/${id}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Upload failed.')
@@ -194,7 +223,7 @@ export default function Home() {
 
   return (
     <>
-      {showPaywall && <PaywallModal onClose={() => setShowPaywall(false)} />}
+      {showPaywall && <PaywallModal userId={user?.id ?? null} onClose={() => setShowPaywall(false)} />}
       {isUploading && <UploadOverlay />}
 
       <div className="min-h-screen bg-white flex flex-col">
@@ -206,7 +235,7 @@ export default function Home() {
               Clear<span className="text-blue-600">Sign</span>
             </span>
             <div className="flex items-center gap-6">
-              {reviewsUsed > 0 && remaining > 0 && (
+              {!user && reviewsUsed > 0 && remaining > 0 && (
                 <span className="hidden sm:block text-xs text-slate-400">
                   {remaining} free review{remaining !== 1 ? 's' : ''} remaining
                 </span>
@@ -214,6 +243,21 @@ export default function Home() {
               <a href="#pricing" className="text-sm text-slate-600 hover:text-slate-900 transition-colors font-medium">
                 Pricing
               </a>
+              {user ? (
+                <Link
+                  href="/account"
+                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors font-medium"
+                >
+                  Account
+                </Link>
+              ) : (
+                <Link
+                  href="/auth/login"
+                  className="text-sm text-slate-600 hover:text-slate-900 transition-colors font-medium"
+                >
+                  Sign in
+                </Link>
+              )}
               <a
                 href="#upload"
                 className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
