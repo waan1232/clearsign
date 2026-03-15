@@ -1,20 +1,37 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/browser'
 
 export function NudgeBanner() {
-  const [remaining, setRemaining] = useState<number | null>(null)
+  const [state, setState] = useState<'loading' | 'hide' | 'one_left' | 'none_left'>('loading')
 
   useEffect(() => {
-    const used = parseInt(localStorage.getItem('clearsign_reviews_used') || '0', 10)
-    const left = Math.max(0, 2 - used)
-    // Only show after at least 1 review has been used
-    if (used > 0) setRemaining(left)
+    async function check() {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+
+      // Logged-in users: hide the banner (they manage credits from their account)
+      if (user) {
+        setState('hide')
+        return
+      }
+
+      // Anonymous users: check localStorage
+      const used = parseInt(localStorage.getItem('clearsign_reviews_used') || '0', 10)
+      if (used <= 0) {
+        setState('hide')
+        return
+      }
+      const left = Math.max(0, 2 - used)
+      setState(left === 1 ? 'one_left' : 'none_left')
+    }
+    check()
   }, [])
 
-  if (remaining === null) return null
+  if (state === 'loading' || state === 'hide') return null
 
-  const isGreen = remaining >= 1
+  const isGreen = state === 'one_left'
   const bg = isGreen ? 'bg-green-50 border-green-200' : 'bg-amber-50 border-amber-200'
   const text = isGreen ? 'text-green-800' : 'text-amber-800'
   const icon = isGreen ? (
@@ -27,7 +44,7 @@ export function NudgeBanner() {
     </svg>
   )
 
-  const message = remaining === 1
+  const message = state === 'one_left'
     ? 'Liked this? You have 1 free review remaining.'
     : 'Liked this? You have 0 free reviews remaining. Upgrade to keep going.'
 

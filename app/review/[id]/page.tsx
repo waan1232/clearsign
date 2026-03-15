@@ -102,17 +102,14 @@ function RiskGauge({ score }: { score: number }) {
   const clampedScore = Math.max(1, Math.min(10, score))
   const pct = (clampedScore - 1) / 9 // 0 → 1
 
-  // SVG arc gauge (half-circle)
-  const radius = 52
+  const r = 52
   const cx = 64
   const cy = 64
-  const startAngle = Math.PI
-  const endAngle = 0
-  const arcLength = Math.PI * radius
-
-  const trackPath = describeArc(cx, cy, radius, 180, 0)
-  const fillEnd = 180 - pct * 180
-  const fillPath = describeArc(cx, cy, radius, 180, fillEnd)
+  // Half-circle from left (9 o'clock) through top to right (3 o'clock)
+  // sweep=0 in SVG y-down = goes upward = top arc
+  const arcPath = `M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`
+  const circumference = Math.PI * r // half-circle arc length ≈ 163
+  const fillLength = pct * circumference
 
   const color =
     clampedScore <= 3 ? '#22c55e' :
@@ -126,22 +123,23 @@ function RiskGauge({ score }: { score: number }) {
 
   return (
     <div className="flex flex-col items-center shrink-0">
-      <svg width="128" height="74" viewBox="0 0 128 74">
+      <svg width="128" height="74" viewBox="0 0 128 74" overflow="visible">
         {/* Track */}
         <path
-          d={trackPath}
+          d={arcPath}
           fill="none"
           stroke="#e2e8f0"
           strokeWidth="12"
           strokeLinecap="round"
         />
-        {/* Fill */}
+        {/* Fill — strokeDasharray reveals only the filled portion from the left */}
         <path
-          d={fillPath}
+          d={arcPath}
           fill="none"
           stroke={color}
           strokeWidth="12"
           strokeLinecap="round"
+          strokeDasharray={`${fillLength} ${circumference}`}
         />
       </svg>
       <div className="text-4xl font-bold text-slate-900 -mt-4">{clampedScore}</div>
@@ -151,21 +149,6 @@ function RiskGauge({ score }: { score: number }) {
       <div className="text-xs text-slate-400 mt-0.5">out of 10</div>
     </div>
   )
-}
-
-function describeArc(cx: number, cy: number, r: number, startDeg: number, endDeg: number) {
-  const start = polarToCartesian(cx, cy, r, startDeg)
-  const end = polarToCartesian(cx, cy, r, endDeg)
-  const largeArc = Math.abs(endDeg - startDeg) > 180 ? 1 : 0
-  return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 1 ${end.x} ${end.y}`
-}
-
-function polarToCartesian(cx: number, cy: number, r: number, deg: number) {
-  const rad = (deg * Math.PI) / 180
-  return {
-    x: cx + r * Math.cos(rad),
-    y: cy + r * Math.sin(rad),
-  }
 }
 
 type ClauseType = Analysis['clauses'][number]
