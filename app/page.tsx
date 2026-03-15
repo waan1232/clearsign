@@ -471,7 +471,7 @@ export default function Home() {
                   ))}
                 </ul>
                 <a
-                  href="https://buy.stripe.com/cNifZgck48eg8Qi5jxbII04"
+                  href="https://buy.stripe.com/4gM9AV3DXf3U3ce6fb7g400"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full text-center border-2 border-slate-900 hover:bg-slate-900 hover:text-white text-slate-900 font-semibold py-3 rounded-xl text-sm transition-colors"
@@ -503,7 +503,7 @@ export default function Home() {
                   ))}
                 </ul>
                 <a
-                  href="https://buy.stripe.com/3cIbJ097SgKMgiK7rFbII05"
+                  href="https://buy.stripe.com/00weVfgqJdZQ5kmdHD7g401"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors"

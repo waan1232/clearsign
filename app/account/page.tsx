@@ -116,7 +116,7 @@ export default async function AccountPage({ searchParams }: Props) {
             <p className="text-sm text-slate-500 mb-4">Buy a single review for $9, or go unlimited for $29/month.</p>
             <div className="flex flex-col sm:flex-row gap-3">
               <a
-                href={`https://buy.stripe.com/cNifZgck48eg8Qi5jxbII04?client_reference_id=${user.id}`}
+                href={`https://buy.stripe.com/4gM9AV3DXf3U3ce6fb7g400?client_reference_id=${user.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 text-center border-2 border-slate-900 hover:bg-slate-900 hover:text-white text-slate-900 font-semibold py-2.5 rounded-xl text-sm transition-colors"
@@ -124,7 +124,7 @@ export default async function AccountPage({ searchParams }: Props) {
                 Buy 1 review — $9
               </a>
               <a
-                href={`https://buy.stripe.com/3cIbJ097SgKMgiK7rFbII05?client_reference_id=${user.id}`}
+                href={`https://buy.stripe.com/00weVfgqJdZQ5kmdHD7g401?client_reference_id=${user.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors"

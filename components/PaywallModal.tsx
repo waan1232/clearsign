@@ -7,8 +7,8 @@ type Props = {
   onClose: () => void
 }
 
-const PER_REVIEW_LINK = 'https://buy.stripe.com/cNifZgck48eg8Qi5jxbII04'
-const SUBSCRIPTION_LINK = 'https://buy.stripe.com/3cIbJ097SgKMgiK7rFbII05'
+const PER_REVIEW_LINK = 'https://buy.stripe.com/4gM9AV3DXf3U3ce6fb7g400'
+const SUBSCRIPTION_LINK = 'https://buy.stripe.com/00weVfgqJdZQ5kmdHD7g401'
 
 function stripeUrl(base: string, userId: string | null) {
   if (!userId) return base
