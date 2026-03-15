@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-
-const STORAGE_KEY = 'readtheprint_reviews_used'
+import { REVIEWS_STORAGE_KEY as STORAGE_KEY } from '@/lib/constants'
 
 export function AnonCarryoverBanner() {
   const [anonCount, setAnonCount] = useState(0)

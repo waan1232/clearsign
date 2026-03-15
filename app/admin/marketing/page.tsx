@@ -1,7 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import type { MarketingIdea } from '@/app/api/marketing/route'
+import { createClient } from '@/lib/supabase/browser'
+
+const ADMIN_EMAIL = 'nathanstorm2006@gmail.com'
 
 const PLATFORM_COLORS: Record<string, { bg: string; text: string }> = {
   reddit:        { bg: 'bg-orange-100', text: 'text-orange-700' },
@@ -98,6 +102,20 @@ export default function MarketingPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [lastUpdate, setLastUpdate] = useState('')
+  const [authed, setAuthed] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    createClient().auth.getUser().then((res: { data: { user: { email?: string } | null } }) => {
+      if (res.data.user?.email === ADMIN_EMAIL) {
+        setAuthed(true)
+      } else {
+        router.replace('/')
+      }
+    })
+  }, [router])
+
+  if (!authed) return null
 
   async function generate(prompt: string) {
     setLoading(true)

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/browser'
+import { REVIEWS_STORAGE_KEY, FREE_REVIEW_LIMIT } from '@/lib/constants'
 
 export function NudgeBanner() {
   const [state, setState] = useState<'loading' | 'hide' | 'one_left' | 'none_left'>('loading')
@@ -18,12 +19,12 @@ export function NudgeBanner() {
       }
 
       // Anonymous users: check localStorage
-      const used = parseInt(localStorage.getItem('readtheprint_reviews_used') || '0', 10)
+      const used = parseInt(localStorage.getItem(REVIEWS_STORAGE_KEY) || '0', 10)
       if (used <= 0) {
         setState('hide')
         return
       }
-      const left = Math.max(0, 2 - used)
+      const left = Math.max(0, FREE_REVIEW_LIMIT - used)
       setState(left === 1 ? 'one_left' : 'none_left')
     }
     check()

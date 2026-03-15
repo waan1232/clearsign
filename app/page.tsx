@@ -8,8 +8,8 @@ import { supabase } from '@/lib/supabase'
 import { createClient } from '@/lib/supabase/browser'
 import type { Session, User } from '@supabase/supabase-js'
 
-const FREE_LIMIT = 2
-const STORAGE_KEY = 'readtheprint_reviews_used'
+import { REVIEWS_STORAGE_KEY as STORAGE_KEY, FREE_REVIEW_LIMIT as FREE_LIMIT } from '@/lib/constants'
+
 const CREDIBILITY_BASE = 43  // shown while real count < 20
 const CREDIBILITY_THRESHOLD = 20
 
@@ -182,15 +182,14 @@ export default function Home() {
     formData.append('file', file)
     try {
       const res = await fetch('/api/review', { method: 'POST', body: formData })
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        throw new Error(data.error || 'Something went wrong. Please try again.')
-      }
-      const data = await res.json()
+      const data = await res.json().catch(() => ({}))
       if (res.status === 402) {
         setIsUploading(false)
         setShowPaywall(true)
         return
+      }
+      if (!res.ok) {
+        throw new Error(data.error || 'Something went wrong. Please try again.')
       }
       const { id } = data
       if (!user) {

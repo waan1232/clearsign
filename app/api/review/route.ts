@@ -136,6 +136,15 @@ Return only valid JSON, no markdown.`,
       analysis = JSON.parse(match[0])
     }
 
+    // Validate AI response has required fields
+    if (
+      typeof analysis.risk_score !== 'number' ||
+      typeof analysis.summary !== 'string' ||
+      !Array.isArray(analysis.clauses)
+    ) {
+      return NextResponse.json({ error: 'AI returned an unexpected response. Please try again.' }, { status: 500 })
+    }
+
     // Save to Supabase
     const db = supabaseAdmin()
 

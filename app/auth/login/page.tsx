@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/browser'
 
-const STORAGE_KEY = 'readtheprint_reviews_used'
+import { REVIEWS_STORAGE_KEY as STORAGE_KEY } from '@/lib/constants'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
@@ -14,7 +14,8 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null)
   const [anonReviews, setAnonReviews] = useState(0)
   const searchParams = useSearchParams()
-  const next = searchParams.get('next') ?? '/account'
+  const rawNext = searchParams.get('next') ?? '/account'
+  const next = rawNext.startsWith('/') ? rawNext : '/account'
 
   useEffect(() => {
     const count = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
