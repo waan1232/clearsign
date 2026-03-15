@@ -49,7 +49,10 @@ export async function POST(req: NextRequest) {
       }, { onConflict: 'id' })
 
     } else if (session.mode === 'payment') {
-      // Per-review one-time purchase — add 1 credit
+      // Per-review one-time purchase — add however many they bought
+      const lineItems = await stripe.checkout.sessions.listLineItems(session.id)
+      const quantity = lineItems.data.reduce((sum, item) => sum + (item.quantity ?? 1), 0)
+
       const { data: profile } = await db
         .from('profiles')
         .select('credits')
@@ -60,7 +63,7 @@ export async function POST(req: NextRequest) {
       await db.from('profiles').upsert({
         id: userId,
         plan: 'per_review',
-        credits: currentCredits + 1,
+        credits: currentCredits + quantity,
         stripe_customer_id: session.customer as string,
       }, { onConflict: 'id' })
     }
