@@ -12,9 +12,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const url = 'https://clearsigner.onrender.com'
+
 export const metadata: Metadata = {
   title: "ClearSign — AI Contract Reviewer",
-  description: "Upload any contract and get a plain-English breakdown of risky clauses in seconds.",
+  description: "Upload any contract and get a plain-English breakdown of risky clauses in seconds. Powered by AI. Free to try.",
+  metadataBase: new URL(url),
+  openGraph: {
+    title: "ClearSign — Know what you're signing",
+    description: "Most people sign contracts they don't understand. ClearSign reads the fine print and tells you exactly what to watch out for — in plain English.",
+    url,
+    siteName: 'ClearSign',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "ClearSign — AI Contract Reviewer",
+    description: "Upload any contract, get a plain-English breakdown of risky clauses in seconds.",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
