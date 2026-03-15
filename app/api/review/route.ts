@@ -6,6 +6,23 @@ import { createClient } from '@/lib/supabase/server'
 export const runtime = 'nodejs'
 export const maxDuration = 60
 
+// Simple in-memory rate limiter: max 5 requests per IP per hour
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
+const RATE_LIMIT = 5
+const RATE_WINDOW_MS = 60 * 60 * 1000
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now()
+  const entry = rateLimitMap.get(ip)
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS })
+    return true
+  }
+  if (entry.count >= RATE_LIMIT) return false
+  entry.count++
+  return true
+}
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
@@ -21,6 +38,14 @@ export async function POST(req: NextRequest) {
     // Check if user is authenticated and gate on credits/plan
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
+
+    // Rate limit anonymous users by IP
+    if (!user) {
+      const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
+      if (!checkRateLimit(ip)) {
+        return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 })
+      }
+    }
 
     let userId: string | null = null
 

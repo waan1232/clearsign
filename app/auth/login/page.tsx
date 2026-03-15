@@ -1,14 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/browser'
 
-export default function LoginPage() {
+const STORAGE_KEY = 'clearsign_reviews_used'
+
+function LoginForm() {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [anonReviews, setAnonReviews] = useState(0)
+  const searchParams = useSearchParams()
+  const next = searchParams.get('next') ?? '/account'
+
+  useEffect(() => {
+    const count = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
+    setAnonReviews(count)
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -19,7 +30,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
       },
     })
 
@@ -69,6 +80,13 @@ export default function LoginPage() {
                 <p className="text-slate-500 text-sm">We&rsquo;ll email you a magic link — no password needed.</p>
               </div>
 
+              {anonReviews > 0 && (
+                <div className="mb-5 bg-blue-50 border border-blue-100 rounded-xl p-3.5 text-sm text-slate-600 text-center">
+                  You&rsquo;ve used <strong className="text-slate-800">{anonReviews} free review{anonReviews !== 1 ? 's' : ''}</strong> as a guest.
+                  Sign in to purchase a plan and keep reviewing.
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
@@ -109,5 +127,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }
