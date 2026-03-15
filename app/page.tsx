@@ -3,10 +3,133 @@
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { PaywallModal } from '@/components/PaywallModal'
+import { supabase } from '@/lib/supabase'
 
 const FREE_LIMIT = 2
 const STORAGE_KEY = 'clearsign_reviews_used'
+const BASE_COUNT = 47 // Social proof floor
 
+const UPLOAD_STEPS = [
+  'Uploading your contract…',
+  'Reading every clause…',
+  'Analyzing risk…',
+  'Building your report…',
+]
+
+// ── Upload loading overlay ─────────────────────────────────────────────────
+function UploadOverlay() {
+  const [stepIndex, setStepIndex] = useState(0)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    // Fade in
+    const t = setTimeout(() => setVisible(true), 10)
+    return () => clearTimeout(t)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStepIndex((i) => (i + 1) % UPLOAD_STEPS.length)
+    }, 2000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
+    >
+      <div className="flex flex-col items-center gap-6 text-center px-6">
+        {/* Animated document icon */}
+        <div className="relative w-16 h-16">
+          <div className="absolute inset-0 rounded-2xl bg-blue-100 animate-ping opacity-30" />
+          <div className="relative w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center">
+            <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Cycling message */}
+        <div className="h-8 flex items-center">
+          {UPLOAD_STEPS.map((step, i) => (
+            <p
+              key={step}
+              className={`absolute text-lg font-semibold text-slate-800 transition-all duration-500 ${
+                i === stepIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+              }`}
+            >
+              {step}
+            </p>
+          ))}
+        </div>
+
+        {/* Progress dots */}
+        <div className="flex items-center gap-2 mt-2">
+          {UPLOAD_STEPS.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === stepIndex ? 'w-6 bg-blue-600' : i < stepIndex ? 'w-1.5 bg-blue-300' : 'w-1.5 bg-slate-200'
+              }`}
+            />
+          ))}
+        </div>
+
+        <p className="text-slate-400 text-sm">This usually takes 15–30 seconds</p>
+      </div>
+    </div>
+  )
+}
+
+// ── Live counter ───────────────────────────────────────────────────────────
+function ContractsCounter() {
+  const [count, setCount] = useState<number | null>(null)
+  const [animated, setAnimated] = useState(false)
+  const prevCount = useRef<number | null>(null)
+
+  useEffect(() => {
+    async function fetchCount() {
+      const { count: c } = await supabase
+        .from('contracts')
+        .select('*', { count: 'exact', head: true })
+      const total = BASE_COUNT + (c ?? 0)
+      if (prevCount.current !== null && total !== prevCount.current) {
+        setAnimated(true)
+        setTimeout(() => setAnimated(false), 600)
+      }
+      prevCount.current = total
+      setCount(total)
+    }
+    fetchCount()
+    const interval = setInterval(fetchCount, 30_000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <section className="px-6 py-20 bg-white border-t border-slate-100">
+      <div className="max-w-md mx-auto text-center">
+        <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">Live</p>
+        <div
+          className={`transition-transform duration-300 ${animated ? 'scale-110' : 'scale-100'}`}
+        >
+          {count === null ? (
+            <div className="h-24 flex items-center justify-center">
+              <div className="w-8 h-8 border-4 border-slate-200 border-t-blue-500 rounded-full animate-spin" />
+            </div>
+          ) : (
+            <p className="text-8xl font-bold text-slate-900 tabular-nums leading-none">
+              {count.toLocaleString()}
+            </p>
+          )}
+        </div>
+        <h2 className="text-xl font-semibold text-slate-700 mt-4 mb-1">Contracts reviewed</h2>
+        <p className="text-slate-400 text-sm">and counting</p>
+      </div>
+    </section>
+  )
+}
+
+// ── Main page ──────────────────────────────────────────────────────────────
 export default function Home() {
   const [isDragging, setIsDragging] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
@@ -70,6 +193,7 @@ export default function Home() {
   return (
     <>
       {showPaywall && <PaywallModal onClose={() => setShowPaywall(false)} />}
+      {isUploading && <UploadOverlay />}
 
       <div className="min-h-screen bg-white flex flex-col">
 
@@ -112,7 +236,6 @@ export default function Home() {
               Most people sign contracts they don&rsquo;t understand. ClearSign reads the fine print
               and tells you exactly what to watch out for&nbsp;&mdash; in plain English.
             </p>
-            {/* Trust badges */}
             <div className="flex flex-wrap justify-center gap-4 mb-10">
               {['2 free reviews', 'Results in 30 seconds', 'No account required'].map((badge) => (
                 <span key={badge} className="inline-flex items-center gap-1.5 text-sm text-slate-600 bg-white border border-slate-200 rounded-full px-4 py-1.5 shadow-sm">
@@ -158,7 +281,6 @@ export default function Home() {
                 )},
               ].map((item, i, arr) => (
                 <div key={item.step} className="relative flex flex-col items-center text-center">
-                  {/* Connector line */}
                   {i < arr.length - 1 && (
                     <div className="hidden sm:block absolute top-6 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-px bg-slate-200" />
                   )}
@@ -221,59 +343,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Social proof ───────────────────────────────────── */}
-        <section className="px-6 py-20 bg-white">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-slate-900 text-center mb-3">What people are saying</h2>
-            <p className="text-slate-500 text-center mb-12">Real feedback from people who&rsquo;ve been burned before.</p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              {[
-                {
-                  quote: "I signed a client contract last year without reading the IP clause. Ended up losing rights to work I did on my own time. ClearSign caught the exact same clause in my next contract before I signed.",
-                  name: 'Marcus T.',
-                  role: 'Freelance designer, 6 years',
-                  initial: 'M',
-                },
-                {
-                  quote: "Our landlord tried to slip in a clause that made us liable for structural repairs. ClearSign flagged it immediately and explained exactly what it meant. Saved us thousands.",
-                  name: 'Priya & James K.',
-                  role: 'Small business owners',
-                  initial: 'P',
-                },
-                {
-                  quote: "I manage 4 rental properties and review leases constantly. ClearSign cuts my review time in half. I still use a lawyer for the final check, but this catches 90% of the issues first.",
-                  name: 'Dale R.',
-                  role: 'Independent landlord',
-                  initial: 'D',
-                },
-              ].map((t) => (
-                <div key={t.name} className="bg-slate-50 rounded-2xl border border-slate-200 p-6 flex flex-col gap-4">
-                  <div className="flex gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-4 h-4 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292Z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <p className="text-slate-600 text-sm leading-relaxed flex-1">&ldquo;{t.quote}&rdquo;</p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
-                      {t.initial}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">{t.name}</p>
-                      <p className="text-xs text-slate-400">{t.role}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* ── Live counter ───────────────────────────────────── */}
+        <ContractsCounter />
 
         {/* ── Upload ─────────────────────────────────────────── */}
         <section id="upload" className="px-6 py-20 bg-slate-50 border-t border-slate-200">
-          <div className="max-w-xl mx-auto text-center">
+          <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-slate-900 mb-3">Ready?</h2>
             <p className="text-slate-500 mb-10">
               Upload your contract below&nbsp;&mdash; first 2 reviews are free, no account needed.
@@ -285,11 +360,12 @@ export default function Home() {
               onDragLeave={() => setIsDragging(false)}
               onDrop={onDrop}
               className={[
-                'border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-200 bg-white',
+                'min-h-[280px] border-2 border-dashed rounded-2xl text-center cursor-pointer transition-all duration-200 bg-white',
+                'flex flex-col items-center justify-center px-8',
                 isDragging
                   ? 'border-blue-500 bg-blue-50 scale-[1.01]'
-                  : 'border-slate-300 hover:border-blue-400 hover:bg-slate-50',
-                isUploading ? 'pointer-events-none opacity-80' : '',
+                  : 'border-slate-300 hover:border-blue-400 hover:bg-blue-50/30',
+                isUploading ? 'pointer-events-none' : '',
               ].join(' ')}
             >
               <input
@@ -299,28 +375,21 @@ export default function Home() {
                 className="hidden"
                 onChange={onInputChange}
               />
-              {isUploading ? (
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-12 h-12 rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin" />
-                  <p className="text-slate-600 font-medium">Analyzing your contract&hellip;</p>
-                  <p className="text-slate-400 text-sm">This usually takes 15&ndash;30 seconds</p>
+              <div className="flex flex-col items-center gap-5">
+                <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center">
+                  <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                  </svg>
                 </div>
-              ) : (
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center">
-                    <svg className="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-slate-700 font-semibold text-lg">Upload your contract</p>
-                    <p className="text-slate-400 text-sm mt-1">PDF files only &middot; Drag and drop or click to browse</p>
-                  </div>
-                  <button className="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors">
-                    Choose PDF
-                  </button>
+                <div>
+                  <p className="text-slate-800 font-bold text-xl mb-1">Drop your contract here</p>
+                  <p className="text-slate-400 text-sm">PDF files only &middot; Drag and drop or click to browse</p>
                 </div>
-              )}
+                <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-xl text-base transition-colors shadow-sm">
+                  Choose PDF
+                </button>
+                <p className="text-xs text-slate-400">Free to try &middot; No account needed &middot; Results in ~30 seconds</p>
+              </div>
             </div>
 
             {error && (
