@@ -52,8 +52,8 @@ export default function PrivacyPage() {
             <h2 className="text-lg font-bold text-slate-900 mb-3">Contact</h2>
             <p className="text-slate-600 leading-relaxed">
               If you have questions about this privacy policy or how we handle your data, you can reach us at{' '}
-              <a href="mailto:privacy@clearsign.app" className="text-blue-600 hover:text-blue-700 transition-colors">
-                privacy@clearsign.app
+              <a href="mailto:privacy@readtheprint.com" className="text-blue-600 hover:text-blue-700 transition-colors">
+                privacy@readtheprint.com
               </a>.
             </p>
           </section>

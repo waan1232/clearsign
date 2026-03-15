@@ -6,13 +6,15 @@ import { createClient } from '@/lib/supabase/browser'
 import type { AuthResponse } from '@supabase/supabase-js'
 
 const SUBJECTS = [
-  'I can\'t upload my contract',
-  'My payment didn\'t go through',
-  'My credits aren\'t showing up',
+  "I can't upload my contract",
+  "My payment didn't go through",
+  "My credits aren't showing up",
   'The analysis seems wrong',
   'I need to cancel my subscription',
   'Other',
 ]
+
+const INPUT = 'w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
 
 export default function HelpPage() {
   const [name, setName] = useState('')
@@ -23,7 +25,6 @@ export default function HelpPage() {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Pre-fill email if logged in
   useEffect(() => {
     const supabase = createClient()
     supabase.auth.getUser().then((res: AuthResponse) => {
@@ -72,13 +73,13 @@ export default function HelpPage() {
             </div>
             <h1 className="text-2xl font-bold text-slate-900 mb-2">We got your message</h1>
             <p className="text-slate-500 text-sm leading-relaxed max-w-sm mx-auto">
-              We&rsquo;ll get back to you at <strong className="text-slate-700">{email}</strong> as soon as possible — usually within 1 business day.
+              We&rsquo;ll get back to you at <strong className="text-slate-700">{email}</strong> as soon as possible, usually within 1 business day.
             </p>
             <Link
               href="/"
               className="mt-8 inline-block text-sm text-blue-600 hover:text-blue-700 font-medium"
             >
-              ← Back to ClearSign
+              Back to ClearSign
             </Link>
           </div>
         ) : (
@@ -96,16 +97,16 @@ export default function HelpPage() {
               <div className="space-y-4">
                 {[
                   {
-                    q: 'Why can\'t I upload my PDF?',
-                    a: 'ClearSign requires PDFs with selectable text. Scanned documents or image-only PDFs won\'t work. Try opening the PDF in a browser — if you can highlight text, it will work.',
+                    q: "Why can't I upload my PDF?",
+                    a: "ClearSign requires PDFs with selectable text. Scanned documents or image-only PDFs won't work. Try opening the PDF in a browser. If you can highlight text, it will work.",
                   },
                   {
-                    q: 'I paid but my credits aren\'t showing.',
-                    a: 'Credits are added automatically after payment. Try refreshing your account page. If it\'s been more than 5 minutes, contact us below.',
+                    q: "I paid but my credits aren't showing.",
+                    a: "Credits are added automatically after payment. Try refreshing your account page. If it's been more than 5 minutes, contact us below.",
                   },
                   {
-                    q: 'How do I cancel my subscription?',
-                    a: 'Email us at support@clearsign.app and we\'ll cancel it immediately. You keep access until the end of your billing period.',
+                    q: "How do I cancel my subscription?",
+                    a: "Email us at support@readtheprint.com and we'll cancel it immediately. You keep access until the end of your billing period.",
                   },
                 ].map(({ q, a }) => (
                   <details key={q} className="group">
@@ -115,7 +116,7 @@ export default function HelpPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                       </svg>
                     </summary>
-                    <p className="mt-2 text-sm text-slate-500 leading-relaxed pl-0">{a}</p>
+                    <p className="mt-2 text-sm text-slate-500 leading-relaxed">{a}</p>
                   </details>
                 ))}
               </div>
@@ -133,7 +134,7 @@ export default function HelpPage() {
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Your name"
                     required
-                    className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={INPUT}
                   />
                 </div>
                 <div>
@@ -144,7 +145,7 @@ export default function HelpPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@company.com"
                     required
-                    className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={INPUT}
                   />
                 </div>
               </div>
@@ -155,9 +156,9 @@ export default function HelpPage() {
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                   required
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  className={INPUT}
                 >
-                  <option value="">Select a topic…</option>
+                  <option value="">Select a topic...</option>
                   {SUBJECTS.map((s) => (
                     <option key={s} value={s}>{s}</option>
                   ))}
@@ -169,10 +170,10 @@ export default function HelpPage() {
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Describe what happened…"
+                  placeholder="Describe what happened..."
                   required
                   rows={5}
-                  className="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className={`${INPUT} resize-none`}
                 />
               </div>
 
@@ -185,7 +186,7 @@ export default function HelpPage() {
                 disabled={loading}
                 className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold rounded-xl px-4 py-3 text-sm transition-colors"
               >
-                {loading ? 'Sending…' : 'Send message'}
+                {loading ? 'Sending...' : 'Send message'}
               </button>
             </form>
           </>
