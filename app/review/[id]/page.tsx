@@ -27,7 +27,7 @@ export default async function ReviewPage({ params }: Props) {
       {/* Nav */}
       <nav className="border-b border-slate-200 bg-white px-6 py-4 flex items-center justify-between">
         <Link href="/" className="text-slate-900 font-semibold text-lg tracking-tight hover:opacity-80 transition-opacity">
-          Clear<span className="text-blue-600">Sign</span>
+          ReadThe<span className="text-blue-600">Print</span>
         </Link>
         <Link
           href="/"
@@ -40,7 +40,7 @@ export default async function ReviewPage({ params }: Props) {
       {/* Disclaimer banner */}
       <div className="bg-slate-100 border-b border-slate-200 px-6 py-2.5 text-center">
         <p className="text-xs text-slate-500">
-          ClearSign is not a law firm and does not provide legal advice. This analysis is for informational purposes only. Always consult a licensed attorney before signing any contract.
+          ReadThePrint is not a law firm and does not provide legal advice. This analysis is for informational purposes only. Always consult a licensed attorney before signing any contract.
         </p>
       </div>
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-const STORAGE_KEY = 'clearsign_reviews_used'
+const STORAGE_KEY = 'readtheprint_reviews_used'
 
 export function AnonCarryoverBanner() {
   const [anonCount, setAnonCount] = useState(0)

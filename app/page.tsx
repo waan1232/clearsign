@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase/browser'
 import type { Session, User } from '@supabase/supabase-js'
 
 const FREE_LIMIT = 2
-const STORAGE_KEY = 'clearsign_reviews_used'
+const STORAGE_KEY = 'readtheprint_reviews_used'
 const CREDIBILITY_BASE = 43  // shown while real count < 20
 const CREDIBILITY_THRESHOLD = 20
 
@@ -232,7 +232,7 @@ export default function Home() {
         <nav className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-sm px-6 py-4">
           <div className="max-w-6xl mx-auto flex items-center justify-between">
             <span className="text-slate-900 font-bold text-xl tracking-tight">
-              Clear<span className="text-blue-600">Sign</span>
+              ReadThe<span className="text-blue-600">Print</span>
             </span>
             <div className="flex items-center gap-6">
               {!user && reviewsUsed > 0 && remaining > 0 && (
@@ -279,7 +279,7 @@ export default function Home() {
               Know what you&rsquo;re signing
             </h1>
             <p className="text-xl text-slate-500 leading-relaxed max-w-2xl mx-auto mb-10">
-              Most people sign contracts they don&rsquo;t understand. ClearSign reads the fine print
+              Most people sign contracts they don&rsquo;t understand. ReadThePrint reads the fine print
               and tells you exactly what to watch out for&nbsp;&mdash; in plain English.
             </p>
             <div className="flex flex-wrap justify-center gap-4 mb-10">

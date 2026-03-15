@@ -18,7 +18,7 @@ export function NudgeBanner() {
       }
 
       // Anonymous users: check localStorage
-      const used = parseInt(localStorage.getItem('clearsign_reviews_used') || '0', 10)
+      const used = parseInt(localStorage.getItem('readtheprint_reviews_used') || '0', 10)
       if (used <= 0) {
         setState('hide')
         return

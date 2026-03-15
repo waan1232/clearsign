@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — ClearSign',
+  title: 'Privacy Policy — ReadThePrint',
 }
 
 export default function PrivacyPage() {
@@ -11,7 +11,7 @@ export default function PrivacyPage() {
       <nav className="border-b border-slate-200 px-6 py-4">
         <div className="max-w-3xl mx-auto">
           <Link href="/" className="text-slate-900 font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
-            Clear<span className="text-blue-600">Sign</span>
+            ReadThe<span className="text-blue-600">Print</span>
           </Link>
         </div>
       </nav>
@@ -25,10 +25,10 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">What we collect</h2>
             <ul className="list-disc list-inside space-y-2 text-slate-600">
-              <li><strong className="text-slate-800">Email address</strong> — only if you choose to join our waitlist or sign up for a paid plan. We do not require an account to use ClearSign.</li>
+              <li><strong className="text-slate-800">Email address</strong> — only if you choose to join our waitlist or sign up for a paid plan. We do not require an account to use ReadThePrint.</li>
               <li><strong className="text-slate-800">Contract text</strong> — temporarily, during analysis only. Text extracted from your PDF is sent to our AI provider to generate your review. It is not stored after processing is complete.</li>
               <li><strong className="text-slate-800">Analysis results</strong> — the risk score, summary, and clause breakdown are stored so you can access your review via its unique link.</li>
-              <li><strong className="text-slate-800">Usage data</strong> — basic information such as pages visited and features used, collected to understand how people use ClearSign and improve the product.</li>
+              <li><strong className="text-slate-800">Usage data</strong> — basic information such as pages visited and features used, collected to understand how people use ReadThePrint and improve the product.</li>
             </ul>
           </section>
 
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-lg font-bold text-slate-900 mb-3">Cookies</h2>
             <p className="text-slate-600 leading-relaxed">
-              ClearSign uses basic cookies for analytics purposes only — to understand how visitors use the site so we can improve it. We do not use advertising cookies or cross-site tracking. You can disable cookies in your browser settings, though this may affect some functionality.
+              ReadThePrint uses basic cookies for analytics purposes only — to understand how visitors use the site so we can improve it. We do not use advertising cookies or cross-site tracking. You can disable cookies in your browser settings, though this may affect some functionality.
             </p>
           </section>
 

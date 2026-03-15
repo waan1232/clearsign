@@ -132,7 +132,7 @@ export default function MarketingPage() {
           <div>
             <div className="flex items-center gap-2 mb-0.5">
               <span className="text-slate-900 font-bold text-lg tracking-tight">
-                Clear<span className="text-blue-600">Sign</span>
+                ReadThe<span className="text-blue-600">Print</span>
               </span>
               <span className="text-slate-300">/</span>
               <span className="text-slate-500 text-sm font-medium">Marketing Lab</span>
@@ -149,12 +149,12 @@ export default function MarketingPage() {
         <div className="bg-white rounded-2xl border border-slate-200 p-8 mb-8">
           <h1 className="text-xl font-bold text-slate-900 mb-1">Marketing idea generator</h1>
           <p className="text-slate-500 text-sm mb-6">
-            Tell Claude what&rsquo;s happening with ClearSign today. Get 10 specific, actionable ideas.
+            Tell Claude what&rsquo;s happening with ReadThePrint today. Get 10 specific, actionable ideas.
           </p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                What&rsquo;s new or interesting about ClearSign today?
+                What&rsquo;s new or interesting about ReadThePrint today?
               </label>
               <textarea
                 value={update}

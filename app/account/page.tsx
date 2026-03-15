@@ -6,7 +6,7 @@ import { AnonCarryoverBanner } from '@/components/AnonCarryoverBanner'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'My Account — ClearSign',
+  title: 'My Account — ReadThePrint',
 }
 
 const planLabel: Record<string, string> = {
@@ -55,7 +55,7 @@ export default async function AccountPage({ searchParams }: Props) {
       <nav className="border-b border-slate-200 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="text-slate-900 font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
-            Clear<span className="text-blue-600">Sign</span>
+            ReadThe<span className="text-blue-600">Print</span>
           </Link>
           <form action={signOut}>
             <button type="submit" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">
@@ -182,7 +182,7 @@ export default async function AccountPage({ searchParams }: Props) {
 
         <div className="mt-10 pt-8 border-t border-slate-200">
           <Link href="/" className="text-sm text-slate-400 hover:text-slate-600 transition-colors">
-            ← Back to ClearSign
+            ← Back to ReadThePrint
           </Link>
         </div>
       </div>

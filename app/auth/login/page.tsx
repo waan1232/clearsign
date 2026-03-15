@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/browser'
 
-const STORAGE_KEY = 'clearsign_reviews_used'
+const STORAGE_KEY = 'readtheprint_reviews_used'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
@@ -47,7 +47,7 @@ function LoginForm() {
       <nav className="border-b border-slate-200 px-6 py-4">
         <div className="max-w-3xl mx-auto">
           <Link href="/" className="text-slate-900 font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
-            Clear<span className="text-blue-600">Sign</span>
+            ReadThe<span className="text-blue-600">Print</span>
           </Link>
         </div>
       </nav>
@@ -76,7 +76,7 @@ function LoginForm() {
           ) : (
             <>
               <div className="text-center mb-8">
-                <h1 className="text-2xl font-bold text-slate-900 mb-2">Sign in to ClearSign</h1>
+                <h1 className="text-2xl font-bold text-slate-900 mb-2">Sign in to ReadThePrint</h1>
                 <p className="text-slate-500 text-sm">We&rsquo;ll email you a magic link — no password needed.</p>
               </div>
 

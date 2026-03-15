@@ -12,7 +12,7 @@ export default function NotFound() {
         href="/"
         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors"
       >
-        Back to ClearSign
+        Back to ReadThePrint
       </Link>
     </div>
   )

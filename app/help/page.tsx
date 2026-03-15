@@ -58,7 +58,7 @@ export default function HelpPage() {
       <nav className="border-b border-slate-200 px-6 py-4">
         <div className="max-w-3xl mx-auto">
           <Link href="/" className="text-slate-900 font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
-            Clear<span className="text-blue-600">Sign</span>
+            ReadThe<span className="text-blue-600">Print</span>
           </Link>
         </div>
       </nav>
@@ -79,7 +79,7 @@ export default function HelpPage() {
               href="/"
               className="mt-8 inline-block text-sm text-blue-600 hover:text-blue-700 font-medium"
             >
-              Back to ClearSign
+              Back to ReadThePrint
             </Link>
           </div>
         ) : (
@@ -98,7 +98,7 @@ export default function HelpPage() {
                 {[
                   {
                     q: "Why can't I upload my PDF?",
-                    a: "ClearSign requires PDFs with selectable text. Scanned documents or image-only PDFs won't work. Try opening the PDF in a browser. If you can highlight text, it will work.",
+                    a: "ReadThePrint requires PDFs with selectable text. Scanned documents or image-only PDFs won't work. Try opening the PDF in a browser. If you can highlight text, it will work.",
                   },
                   {
                     q: "I paid but my credits aren't showing.",

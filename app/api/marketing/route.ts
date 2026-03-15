@@ -8,7 +8,7 @@ export type MarketingIdea = {
   why: string
 }
 
-const SYSTEM_PROMPT = `You are a growth marketer for ClearSign, an AI contract reviewer for small businesses and freelancers. Your job is to generate creative, specific, non-generic marketing ideas based on what's happening with the product today.
+const SYSTEM_PROMPT = `You are a growth marketer for ReadThePrint, an AI contract reviewer for small businesses and freelancers. Your job is to generate creative, specific, non-generic marketing ideas based on what's happening with the product today.
 
 Given a short update about the product, generate 10 marketing ideas. Each idea should include:
 - platform: where to post it (Reddit, Twitter, ProductHunt, cold email, TikTok, etc)
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const { update } = await req.json()
 
     if (!update || typeof update !== 'string' || update.trim().length < 3) {
-      return NextResponse.json({ error: 'Please provide an update about ClearSign.' }, { status: 400 })
+      return NextResponse.json({ error: 'Please provide an update about ReadThePrint.' }, { status: 400 })
     }
 
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       messages: [
         {
           role: 'user',
-          content: `Here's what's happening with ClearSign today: ${update.trim()}`,
+          content: `Here's what's happening with ReadThePrint today: ${update.trim()}`,
         },
       ],
     })
