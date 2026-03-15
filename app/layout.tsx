@@ -52,6 +52,8 @@ export default function RootLayout({
             <a href="/terms" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Terms of Service</a>
             <span className="text-slate-200">·</span>
             <a href="/privacy" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Privacy Policy</a>
+            <span className="text-slate-200">·</span>
+            <a href="/help" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Help & Support</a>
           </div>
         </footer>
       </body>
