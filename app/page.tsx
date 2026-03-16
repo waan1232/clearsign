@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabase'
 import { createClient } from '@/lib/supabase/browser'
 import type { Session, User } from '@supabase/supabase-js'
 
-import { REVIEWS_STORAGE_KEY as STORAGE_KEY, FREE_REVIEW_LIMIT as FREE_LIMIT, PROMO_BONUS_KEY } from '@/lib/constants'
+import { REVIEWS_STORAGE_KEY as STORAGE_KEY, FREE_REVIEW_LIMIT as FREE_LIMIT, PROMO_BONUS_KEY, HAS_ACCOUNT_KEY } from '@/lib/constants'
 
 const CREDIBILITY_BASE = 43  // shown while real count < 20
 const CREDIBILITY_THRESHOLD = 20
@@ -240,6 +240,7 @@ export default function Home() {
   const [showPaywall, setShowPaywall] = useState(false)
   const [reviewsUsed, setReviewsUsed] = useState(0)
   const [bonusReviews, setBonusReviews] = useState(0)
+  const [hasAccount, setHasAccount] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
@@ -249,6 +250,7 @@ export default function Home() {
     const bonus = parseInt(localStorage.getItem(PROMO_BONUS_KEY) || '0', 10)
     setReviewsUsed(stored)
     setBonusReviews(bonus)
+    setHasAccount(!!localStorage.getItem(HAS_ACCOUNT_KEY))
   }
 
   useEffect(() => {
@@ -257,10 +259,20 @@ export default function Home() {
     // Load auth state
     const supabaseBrowser = createClient()
     supabaseBrowser.auth.getUser().then(
-      (result: { data: { user: User | null } }) => setUser(result.data.user)
+      (result: { data: { user: User | null } }) => {
+        if (result.data.user) {
+          localStorage.setItem(HAS_ACCOUNT_KEY, '1')
+          setHasAccount(true)
+        }
+        setUser(result.data.user)
+      }
     )
     const { data: { subscription } } = supabaseBrowser.auth.onAuthStateChange(
       (_event: string, session: Session | null) => {
+        if (session?.user) {
+          localStorage.setItem(HAS_ACCOUNT_KEY, '1')
+          setHasAccount(true)
+        }
         setUser(session?.user ?? null)
       }
     )
@@ -360,7 +372,7 @@ export default function Home() {
                   href="/auth/login"
                   className="text-sm text-slate-600 hover:text-slate-900 transition-colors font-medium"
                 >
-                  Sign in
+                  {hasAccount ? 'Sign in' : 'Sign up'}
                 </Link>
               )}
               {user ? (
