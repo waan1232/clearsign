@@ -155,7 +155,7 @@ export default function MarketingPage() {
               <span className="text-slate-300">/</span>
               <span className="text-slate-500 text-sm font-medium">Marketing Lab</span>
             </div>
-            <p className="text-xs text-slate-400">Internal tool — not public</p>
+            <p className="text-xs text-slate-400">Internal tool (not public)</p>
           </div>
           <div className="w-2 h-2 rounded-full bg-green-400 ring-4 ring-green-100" title="Internal only" />
         </div>

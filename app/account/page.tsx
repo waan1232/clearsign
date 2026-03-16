@@ -6,7 +6,7 @@ import { AnonCarryoverBanner } from '@/components/AnonCarryoverBanner'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'My Account — ReadThePrint',
+  title: 'My Account | ReadThePrint',
 }
 
 const planLabel: Record<string, string> = {
@@ -78,7 +78,7 @@ export default async function AccountPage({ searchParams }: Props) {
             <div>
               <p className="font-semibold text-green-900">Payment successful!</p>
               <p className="text-sm text-green-700 mt-0.5">
-                Your account has been upgraded. It may take a moment to reflect below — refresh if needed.
+                Your account has been upgraded. It may take a moment to reflect below. Refresh if needed..
               </p>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default async function AccountPage({ searchParams }: Props) {
                 rel="noopener noreferrer"
                 className="flex-1 text-center border-2 border-slate-900 hover:bg-slate-900 hover:text-white text-slate-900 font-semibold py-2.5 rounded-xl text-sm transition-colors"
               >
-                Buy 1 review — $9
+                Buy 1 review - $9
               </a>
               <a
                 href={`https://buy.stripe.com/00weVfgqJdZQ5kmdHD7g401?client_reference_id=${user.id}`}
@@ -129,7 +129,7 @@ export default async function AccountPage({ searchParams }: Props) {
                 rel="noopener noreferrer"
                 className="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors"
               >
-                Start free trial — $29/mo
+                Start free trial - $29/mo
               </a>
             </div>
           </div>

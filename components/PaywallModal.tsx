@@ -63,7 +63,7 @@ export function PaywallModal({ userId, onClose }: Props) {
             rel="noopener noreferrer"
             className="w-full border-2 border-blue-600 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl px-5 py-3.5 text-sm transition-colors flex items-center justify-between"
           >
-            <span>Start free trial — unlimited reviews</span>
+            <span>Start free trial - unlimited reviews</span>
             <span className="text-blue-200 font-normal">$29/mo</span>
           </a>
           <a

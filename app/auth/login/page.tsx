@@ -65,7 +65,7 @@ function LoginForm() {
               <h1 className="text-2xl font-bold text-slate-900 mb-2">Check your email</h1>
               <p className="text-slate-500 text-sm leading-relaxed">
                 We sent a sign-in link to <strong className="text-slate-700">{email}</strong>.
-                Click it to sign in — no password needed.
+                Click it to sign in. No password needed..
               </p>
               <button
                 onClick={() => { setSent(false); setEmail('') }}
@@ -78,7 +78,7 @@ function LoginForm() {
             <>
               <div className="text-center mb-8">
                 <h1 className="text-2xl font-bold text-slate-900 mb-2">Sign in to ReadThePrint</h1>
-                <p className="text-slate-500 text-sm">We&rsquo;ll email you a magic link — no password needed.</p>
+                <p className="text-slate-500 text-sm">We&rsquo;ll email you a magic link. No password needed..</p>
               </div>
 
               {anonReviews > 0 && (

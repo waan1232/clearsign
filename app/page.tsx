@@ -279,7 +279,7 @@ export default function Home() {
             </h1>
             <p className="text-xl text-slate-500 leading-relaxed max-w-2xl mx-auto mb-10">
               Most people sign contracts they don&rsquo;t understand. ReadThePrint reads the fine print
-              and tells you exactly what to watch out for&nbsp;&mdash; in plain English.
+              and tells you exactly what to watch out for, in plain English.
             </p>
             <div className="flex flex-wrap justify-center gap-4 mb-10">
               {['2 free reviews', 'Results in 30 seconds', 'No account required'].map((badge) => (
@@ -295,7 +295,7 @@ export default function Home() {
               href="#upload"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-3.5 rounded-xl text-base transition-colors shadow-sm"
             >
-              Upload a contract — it&rsquo;s free
+              Upload a contract - it&rsquo;s free
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
               </svg>
@@ -309,7 +309,7 @@ export default function Home() {
             <h2 className="text-2xl font-bold text-slate-900 text-center mb-12">How it works</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 relative">
               {[
-                { step: '1', title: 'Upload your contract', desc: 'Drop any PDF — NDA, lease, freelance agreement, whatever you need reviewed.', icon: (
+                { step: '1', title: 'Upload your contract', desc: 'Drop any PDF: NDA, lease, freelance agreement, whatever you need reviewed.', icon: (
                   <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                   </svg>
@@ -346,7 +346,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold text-slate-900 text-center mb-3">What we catch</h2>
             <p className="text-slate-500 text-center mb-12 max-w-xl mx-auto">
-              The clauses most people skip over — and regret later.
+              The clauses most people skip over, and regret later..
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {[
@@ -396,7 +396,7 @@ export default function Home() {
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-slate-900 mb-3">Ready?</h2>
             <p className="text-slate-500 mb-10">
-              Upload your contract below&nbsp;&mdash; first 2 reviews are free, no account needed.
+              Upload your contract below, first 2 reviews are free, no account needed.
             </p>
 
             <div

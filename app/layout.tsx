@@ -15,19 +15,19 @@ const geistMono = Geist_Mono({
 const url = 'https://readtheprint.com'
 
 export const metadata: Metadata = {
-  title: "ReadThePrint — AI Contract Reviewer",
+  title: "ReadThePrint | AI Contract Reviewer",
   description: "Upload any contract and get a plain-English breakdown of risky clauses in seconds. Powered by AI. Free to try.",
   metadataBase: new URL(url),
   openGraph: {
-    title: "ReadThePrint — Know what you're signing",
-    description: "Most people sign contracts they don't understand. ReadThePrint reads the fine print and tells you exactly what to watch out for — in plain English.",
+    title: "ReadThePrint | Know what you're signing",
+    description: "Most people sign contracts they don't understand. ReadThePrint reads the fine print and tells you exactly what to watch out for, in plain English.",
     url,
     siteName: 'ReadThePrint',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: "ReadThePrint — AI Contract Reviewer",
+    title: "ReadThePrint | AI Contract Reviewer",
     description: "Upload any contract, get a plain-English breakdown of risky clauses in seconds.",
   },
   robots: { index: true, follow: true },
