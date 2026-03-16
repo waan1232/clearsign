@@ -363,12 +363,21 @@ export default function Home() {
                   Sign in
                 </Link>
               )}
-              <a
-                href="#upload"
-                className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
-              >
-                Try free
-              </a>
+              {user ? (
+                <a
+                  href="#upload"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                >
+                  Upload contract
+                </a>
+              ) : (
+                <a
+                  href="#upload"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                >
+                  Try free
+                </a>
+              )}
             </div>
           </div>
         </nav>
