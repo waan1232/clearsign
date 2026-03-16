@@ -58,7 +58,7 @@ export default async function AccountPage({ searchParams }: Props) {
             ReadThe<span className="text-blue-600">Print</span>
           </Link>
           <form action={signOut}>
-            <button type="submit" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">
+            <button type="submit" className="text-sm text-slate-500 hover:text-slate-900 underline-offset-2 hover:underline transition-colors cursor-pointer">
               Sign out
             </button>
           </form>
