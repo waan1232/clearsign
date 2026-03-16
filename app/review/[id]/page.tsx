@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { supabase, type Analysis } from '@/lib/supabase'
+import { supabaseAdmin, type Analysis } from '@/lib/supabase'
 import { NudgeBanner } from '@/components/NudgeBanner'
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 export default async function ReviewPage({ params }: Props) {
   const { id } = await params
 
-  const { data: contract, error } = await supabase
+  const { data: contract, error } = await supabaseAdmin()
     .from('contracts')
     .select('*')
     .eq('id', id)
