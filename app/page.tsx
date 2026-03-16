@@ -134,6 +134,96 @@ function ContractsCounter() {
   )
 }
 
+// ── Pricing section ────────────────────────────────────────────────────────
+function PricingSection({ user, onPaywall }: { user: User | null; onPaywall: () => void }) {
+  const [loading, setLoading] = useState<'per_review' | 'subscription' | null>(null)
+
+  async function startCheckout(plan: 'per_review' | 'subscription') {
+    if (!user) { onPaywall(); return }
+    setLoading(plan)
+    try {
+      const res = await fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
+      window.location.href = data.url
+    } catch {
+      setLoading(null)
+    }
+  }
+
+  return (
+    <section id="pricing" className="px-6 py-20 bg-white border-t border-slate-200">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-2xl font-bold text-slate-900 text-center mb-3">Simple pricing</h2>
+        <p className="text-slate-500 text-center mb-12">Pay as you go, or go unlimited. No subscriptions you&rsquo;ll forget to cancel.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto">
+
+          {/* Per review */}
+          <div className="border border-slate-200 rounded-2xl p-8 flex flex-col">
+            <p className="text-sm font-medium text-slate-500 mb-2">Pay per review</p>
+            <div className="flex items-end gap-1 mb-6">
+              <span className="text-4xl font-bold text-slate-900">$9</span>
+              <span className="text-slate-400 mb-1">/ review</span>
+            </div>
+            <ul className="space-y-2.5 mb-8 flex-1">
+              {['One contract review', 'Full clause breakdown', 'Risk score & summary', 'No subscription'].map((f) => (
+                <li key={f} className="flex items-center gap-2 text-sm text-slate-600">
+                  <svg className="w-4 h-4 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => startCheckout('per_review')}
+              disabled={loading !== null}
+              className="w-full text-center border-2 border-slate-900 hover:bg-slate-900 hover:text-white disabled:opacity-60 text-slate-900 font-semibold py-3 rounded-xl text-sm transition-colors"
+            >
+              {loading === 'per_review' ? 'Redirecting...' : 'Buy now'}
+            </button>
+          </div>
+
+          {/* Monthly */}
+          <div className="border-2 border-blue-600 rounded-2xl p-8 flex flex-col relative shadow-lg shadow-blue-100">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+              <span className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                Most popular
+              </span>
+            </div>
+            <p className="text-sm font-medium text-slate-500 mb-2">Unlimited</p>
+            <div className="flex items-end gap-1 mb-6">
+              <span className="text-4xl font-bold text-slate-900">$29</span>
+              <span className="text-slate-400 mb-1">/ month</span>
+            </div>
+            <ul className="space-y-2.5 mb-8 flex-1">
+              {['Unlimited contract reviews', 'Full clause breakdown', 'Risk score & summary', '7-day free trial', 'Cancel anytime'].map((f) => (
+                <li key={f} className="flex items-center gap-2 text-sm text-slate-600">
+                  <svg className="w-4 h-4 text-blue-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => startCheckout('subscription')}
+              disabled={loading !== null}
+              className="w-full text-center bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold py-3 rounded-xl text-sm transition-colors"
+            >
+              {loading === 'subscription' ? 'Redirecting...' : 'Start free trial'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // ── Main page ──────────────────────────────────────────────────────────────
 export default function Home() {
   const [isDragging, setIsDragging] = useState(false)
@@ -446,73 +536,7 @@ export default function Home() {
         </section>
 
         {/* ── Pricing ────────────────────────────────────────── */}
-        <section id="pricing" className="px-6 py-20 bg-white border-t border-slate-200">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold text-slate-900 text-center mb-3">Simple pricing</h2>
-            <p className="text-slate-500 text-center mb-12">Pay as you go, or go unlimited. No subscriptions you&rsquo;ll forget to cancel.</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto">
-
-              {/* Per review */}
-              <div className="border border-slate-200 rounded-2xl p-8 flex flex-col">
-                <p className="text-sm font-medium text-slate-500 mb-2">Pay per review</p>
-                <div className="flex items-end gap-1 mb-6">
-                  <span className="text-4xl font-bold text-slate-900">$9</span>
-                  <span className="text-slate-400 mb-1">/ review</span>
-                </div>
-                <ul className="space-y-2.5 mb-8 flex-1">
-                  {['One contract review', 'Full clause breakdown', 'Risk score & summary', 'No subscription'].map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-slate-600">
-                      <svg className="w-4 h-4 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                      </svg>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="https://buy.stripe.com/4gM9AV3DXf3U3ce6fb7g400"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center border-2 border-slate-900 hover:bg-slate-900 hover:text-white text-slate-900 font-semibold py-3 rounded-xl text-sm transition-colors"
-                >
-                  Buy now
-                </a>
-              </div>
-
-              {/* Monthly */}
-              <div className="border-2 border-blue-600 rounded-2xl p-8 flex flex-col relative shadow-lg shadow-blue-100">
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <span className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                    Most popular
-                  </span>
-                </div>
-                <p className="text-sm font-medium text-slate-500 mb-2">Unlimited</p>
-                <div className="flex items-end gap-1 mb-6">
-                  <span className="text-4xl font-bold text-slate-900">$29</span>
-                  <span className="text-slate-400 mb-1">/ month</span>
-                </div>
-                <ul className="space-y-2.5 mb-8 flex-1">
-                  {['Unlimited contract reviews', 'Full clause breakdown', 'Risk score & summary', '7-day free trial', 'Cancel anytime'].map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-slate-600">
-                      <svg className="w-4 h-4 text-blue-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                      </svg>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="https://buy.stripe.com/00weVfgqJdZQ5kmdHD7g401"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors"
-                >
-                  Start free trial
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+        <PricingSection user={user} onPaywall={() => setShowPaywall(true)} />
 
       </div>
     </>

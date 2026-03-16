@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 
 type Props = {
@@ -7,15 +8,28 @@ type Props = {
   onClose: () => void
 }
 
-const PER_REVIEW_LINK = 'https://buy.stripe.com/4gM9AV3DXf3U3ce6fb7g400'
-const SUBSCRIPTION_LINK = 'https://buy.stripe.com/00weVfgqJdZQ5kmdHD7g401'
-
-function stripeUrl(base: string, userId: string | null) {
-  if (!userId) return base
-  return `${base}?client_reference_id=${userId}`
-}
-
 export function PaywallModal({ userId, onClose }: Props) {
+  const [loading, setLoading] = useState<'per_review' | 'subscription' | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  async function startCheckout(plan: 'per_review' | 'subscription') {
+    setLoading(plan)
+    setError(null)
+    try {
+      const res = await fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.')
+      window.location.href = data.url
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong.')
+      setLoading(null)
+    }
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
@@ -45,37 +59,49 @@ export function PaywallModal({ userId, onClose }: Props) {
           <p className="text-slate-500 mt-2 text-sm">Unlock more reviews below.</p>
         </div>
 
-        {/* Sign in prompt if not logged in */}
-        {!userId && (
-          <div className="mb-5 bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-slate-600 text-center">
-            <Link href="/auth/login" className="font-semibold text-blue-600 hover:text-blue-700">
-              Sign in
+        {/* Anonymous: must sign in before purchasing */}
+        {!userId ? (
+          <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-slate-600 text-center">
+              <Link href="/auth/login" className="font-semibold text-blue-600 hover:text-blue-700">
+                Sign in
+              </Link>
+              {' '}first so your credits are tied to your account.
+            </div>
+            <Link
+              href="/auth/login"
+              className="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl px-5 py-3.5 text-sm transition-colors"
+            >
+              Sign in to purchase
             </Link>
-            {' '}first so your credits are saved to your account.
+          </div>
+        ) : (
+          /* Logged-in: dynamic checkout */
+          <div className="space-y-3">
+            <button
+              onClick={() => startCheckout('subscription')}
+              disabled={loading !== null}
+              className="w-full border-2 border-blue-600 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold rounded-xl px-5 py-3.5 text-sm transition-colors flex items-center justify-between"
+            >
+              <span>{loading === 'subscription' ? 'Redirecting...' : 'Start free trial - unlimited reviews'}</span>
+              <span className="text-blue-200 font-normal">$29/mo</span>
+            </button>
+            <button
+              onClick={() => startCheckout('per_review')}
+              disabled={loading !== null}
+              className="w-full border-2 border-slate-200 hover:border-slate-300 disabled:opacity-60 text-slate-700 font-semibold rounded-xl px-5 py-3.5 text-sm transition-colors flex items-center justify-between"
+            >
+              <span>{loading === 'per_review' ? 'Redirecting...' : 'Buy a single review'}</span>
+              <span className="text-slate-400 font-normal">$9</span>
+            </button>
+
+            {error && (
+              <p className="text-red-600 text-sm text-center bg-red-50 px-3 py-2 rounded-lg border border-red-200">
+                {error}
+              </p>
+            )}
           </div>
         )}
-
-        {/* Plans */}
-        <div className="space-y-3">
-          <a
-            href={stripeUrl(SUBSCRIPTION_LINK, userId)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full border-2 border-blue-600 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl px-5 py-3.5 text-sm transition-colors flex items-center justify-between"
-          >
-            <span>Start free trial - unlimited reviews</span>
-            <span className="text-blue-200 font-normal">$29/mo</span>
-          </a>
-          <a
-            href={stripeUrl(PER_REVIEW_LINK, userId)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full border-2 border-slate-200 hover:border-slate-300 text-slate-700 font-semibold rounded-xl px-5 py-3.5 text-sm transition-colors flex items-center justify-between"
-          >
-            <span>Buy a single review</span>
-            <span className="text-slate-400 font-normal">$9</span>
-          </a>
-        </div>
 
         <p className="text-center text-xs text-slate-400 mt-4">7-day free trial on monthly plan. Cancel anytime.</p>
       </div>
