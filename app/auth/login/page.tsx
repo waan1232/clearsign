@@ -36,7 +36,14 @@ function LoginForm() {
     })
 
     if (error) {
-      setError(error.message)
+      // Map technical Supabase errors to user-friendly messages
+      if (error.message.toLowerCase().includes('rate limit') || error.message.toLowerCase().includes('too many')) {
+        setError('Too many sign-in attempts. Please wait a few minutes and try again.')
+      } else if (error.message.toLowerCase().includes('email') || error.message.toLowerCase().includes('smtp') || error.message.toLowerCase().includes('sending')) {
+        setError('There was a problem sending your sign-in email. Please try again in a moment or contact support@readtheprint.com.')
+      } else {
+        setError('Something went wrong. Please try again or contact support@readtheprint.com.')
+      }
     } else {
       setSent(true)
     }
