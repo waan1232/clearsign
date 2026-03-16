@@ -15,23 +15,71 @@ const geistMono = Geist_Mono({
 const url = 'https://readtheprint.com'
 
 export const metadata: Metadata = {
-  title: "ReadThePrint | AI Contract Reviewer",
-  description: "Upload any contract and get a plain-English breakdown of risky clauses in seconds. Powered by AI. Free to try.",
+  title: {
+    default: "ReadThePrint | AI Contract Reviewer",
+    template: "%s | ReadThePrint",
+  },
+  description: "Upload any contract and get a plain-English breakdown of risky clauses in seconds. AI-powered contract review for small businesses and freelancers. Free to try, no account needed.",
   metadataBase: new URL(url),
+  keywords: [
+    "AI contract reviewer",
+    "contract analysis",
+    "read contract online",
+    "NDA review",
+    "contract risk analysis",
+    "AI legal review",
+    "contract checker",
+    "freelance contract review",
+    "small business contract review",
+  ],
   openGraph: {
     title: "ReadThePrint | Know what you're signing",
-    description: "Most people sign contracts they don't understand. ReadThePrint reads the fine print and tells you exactly what to watch out for, in plain English.",
+    description: "Most people sign contracts they don't understand. ReadThePrint reads the fine print and tells you exactly what to watch out for, in plain English. Free to try.",
     url,
     siteName: 'ReadThePrint',
     type: 'website',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'ReadThePrint | AI Contract Reviewer' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: "ReadThePrint | AI Contract Reviewer",
-    description: "Upload any contract, get a plain-English breakdown of risky clauses in seconds.",
+    description: "Upload any contract, get a plain-English breakdown of risky clauses in seconds. Free to try.",
+    images: ['/opengraph-image'],
   },
   robots: { index: true, follow: true },
+  alternates: { canonical: url },
 };
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'ReadThePrint',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  url,
+  description: 'AI-powered contract review tool for small businesses and freelancers. Upload a PDF contract and get a plain-English breakdown of risky clauses, a risk score, and actionable suggestions.',
+  offers: [
+    {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      description: '2 free contract reviews, no account needed',
+    },
+    {
+      '@type': 'Offer',
+      price: '9.00',
+      priceCurrency: 'USD',
+      description: 'Single contract review',
+    },
+    {
+      '@type': 'Offer',
+      price: '29.00',
+      priceCurrency: 'USD',
+      description: 'Unlimited monthly subscription',
+      billingPeriod: 'P1M',
+    },
+  ],
+}
 
 export default function RootLayout({
   children,
@@ -40,6 +88,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

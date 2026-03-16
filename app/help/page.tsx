@@ -5,6 +5,37 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/browser'
 import type { AuthResponse } from '@supabase/supabase-js'
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: "Why can't I upload my PDF?",
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: "ReadThePrint requires PDFs with selectable text. Scanned documents or image-only PDFs won't work. Try opening the PDF in a browser. If you can highlight text, it will work.",
+      },
+    },
+    {
+      '@type': 'Question',
+      name: "I paid but my credits aren't showing.",
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: "Credits are added automatically after payment. Try refreshing your account page. If it's been more than 5 minutes, contact support.",
+      },
+    },
+    {
+      '@type': 'Question',
+      name: "How do I cancel my subscription?",
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: "Email support@readtheprint.com and we'll cancel immediately. You keep access until the end of your billing period.",
+      },
+    },
+  ],
+}
+
 const SUBJECTS = [
   "I can't upload my contract",
   "My payment didn't go through",
@@ -55,6 +86,10 @@ export default function HelpPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <nav className="border-b border-slate-200 px-6 py-4">
         <div className="max-w-3xl mx-auto">
           <Link href="/" className="text-slate-900 font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
