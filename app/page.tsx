@@ -272,14 +272,14 @@ export default function Home() {
           <div className="max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-8 uppercase tracking-wider">
               <span className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
-              AI-powered contract review
+              Built for freelancers and agencies
             </div>
             <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 tracking-tight leading-tight mb-6">
-              Know what you&rsquo;re signing
+              Stop signing contracts you don&rsquo;t fully understand
             </h1>
             <p className="text-xl text-slate-500 leading-relaxed max-w-2xl mx-auto mb-10">
-              Most people sign contracts they don&rsquo;t understand. ReadThePrint reads the fine print
-              and tells you exactly what to watch out for, in plain English.
+              Clients send NDAs, MSAs, and service agreements full of one-sided clauses. ReadThePrint
+              reads the fine print and tells you exactly what to push back on, in plain English.
             </p>
             <div className="flex flex-wrap justify-center gap-4 mb-10">
               {['2 free reviews', 'Results in 30 seconds', 'No account required'].map((badge) => (
@@ -346,22 +346,22 @@ export default function Home() {
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold text-slate-900 text-center mb-3">What we catch</h2>
             <p className="text-slate-500 text-center mb-12 max-w-xl mx-auto">
-              The clauses most people skip over, and regret later..
+              The clauses freelancers and agencies get burned by most often.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {[
                 {
                   icon: '⚠️',
                   title: 'Unfair termination clauses',
-                  desc: 'We flag clauses that let the other party walk away without penalty while locking you in.',
+                  desc: 'Clients who can cancel without notice or payment while you stay locked in. We flag asymmetric exit terms.',
                   color: 'border-red-200 bg-red-50',
                   badge: 'High risk',
                   badgeColor: 'bg-red-100 text-red-700',
                 },
                 {
                   icon: '🔒',
-                  title: 'Perpetual obligations',
-                  desc: 'NDAs and non-competes with no expiry that follow you forever.',
+                  title: 'Overreaching NDAs and non-competes',
+                  desc: 'Non-disclosures and non-competes with no expiry date or scope limits that can block future clients.',
                   color: 'border-amber-200 bg-amber-50',
                   badge: 'Medium risk',
                   badgeColor: 'bg-amber-100 text-amber-700',
@@ -369,7 +369,7 @@ export default function Home() {
                 {
                   icon: '⚖️',
                   title: 'One-sided liability',
-                  desc: 'Terms that make you responsible for things entirely outside your control.',
+                  desc: 'MSA terms that hold you liable for client delays, IP disputes, or third-party issues you never agreed to own.',
                   color: 'border-red-200 bg-red-50',
                   badge: 'High risk',
                   badgeColor: 'bg-red-100 text-red-700',
@@ -394,9 +394,9 @@ export default function Home() {
         {/* ── Upload ─────────────────────────────────────────── */}
         <section id="upload" className="px-6 py-20 bg-slate-50 border-t border-slate-200">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-slate-900 mb-3">Ready?</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-3">Ready to review your contract?</h2>
             <p className="text-slate-500 mb-10">
-              Upload your contract below, first 2 reviews are free, no account needed.
+              Upload any NDA, MSA, or service agreement. First 2 reviews are free, no account needed.
             </p>
 
             <div

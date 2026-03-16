@@ -6,9 +6,9 @@ import { createClient } from '@/lib/supabase/server'
 export const runtime = 'nodejs'
 export const maxDuration = 60
 
-// Simple in-memory rate limiter: max 5 requests per IP per hour
+// Simple in-memory rate limiter: max 2 requests per IP per hour (matches free tier)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
-const RATE_LIMIT = 5
+const RATE_LIMIT = 2
 const RATE_WINDOW_MS = 60 * 60 * 1000
 
 function checkRateLimit(ip: string): boolean {
