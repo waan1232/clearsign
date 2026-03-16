@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Stripe from 'stripe'
 import { createClient } from '@/lib/supabase/server'
 
 export const runtime = 'nodejs'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+const SUBSCRIPTION_LINK = 'https://buy.stripe.com/00weVfgqJdZQ5kmdHD7g401'
+const PER_REVIEW_LINK = 'https://buy.stripe.com/4gM9AV3DXf3U3ce6fb7g400'
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
@@ -15,51 +15,9 @@ export async function POST(req: NextRequest) {
   }
 
   const { plan } = await req.json() as { plan: 'per_review' | 'subscription' }
-  const origin = process.env.NEXT_PUBLIC_APP_URL ?? 'https://readtheprint.com'
 
-  let session: Stripe.Checkout.Session
+  const base = plan === 'subscription' ? SUBSCRIPTION_LINK : PER_REVIEW_LINK
+  const url = `${base}?client_reference_id=${user.id}`
 
-  if (plan === 'subscription') {
-    session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
-      client_reference_id: user.id,
-      customer_email: user.email,
-      line_items: [{
-        quantity: 1,
-        price_data: {
-          currency: 'usd',
-          recurring: { interval: 'month' },
-          product_data: {
-            name: 'ReadThePrint - Unlimited Contract Reviews',
-            description: 'Unlimited AI contract reviews. Cancel anytime.',
-          },
-          unit_amount: 2900,
-        },
-      }],
-      subscription_data: { trial_period_days: 7 },
-      success_url: `${origin}/account?payment=success`,
-      cancel_url: `${origin}/`,
-    })
-  } else {
-    session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      client_reference_id: user.id,
-      customer_email: user.email,
-      line_items: [{
-        quantity: 1,
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: 'ReadThePrint - Contract Review',
-            description: 'One AI contract review. Full clause breakdown, risk score, and plain-English summary.',
-          },
-          unit_amount: 900,
-        },
-      }],
-      success_url: `${origin}/account?payment=success`,
-      cancel_url: `${origin}/`,
-    })
-  }
-
-  return NextResponse.json({ url: session.url })
+  return NextResponse.json({ url })
 }
