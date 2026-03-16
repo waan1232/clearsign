@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/browser'
 
 export default function WelcomePage() {
   const [email, setEmail] = useState<string | null>(null)
-  const [countdown, setCountdown] = useState(4)
+  const [countdown, setCountdown] = useState(15)
   const router = useRouter()
 
   useEffect(() => {

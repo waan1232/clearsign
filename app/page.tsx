@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { PaywallModal } from '@/components/PaywallModal'
-import { supabase } from '@/lib/supabase'
 import { createClient } from '@/lib/supabase/browser'
 import type { Session, User } from '@supabase/supabase-js'
 
@@ -93,9 +92,8 @@ function ContractsCounter() {
 
   useEffect(() => {
     async function fetchCount() {
-      const { count: c } = await supabase
-        .from('contracts')
-        .select('*', { count: 'exact', head: true })
+      const res = await fetch('/api/contracts/count')
+      const { count: c } = await res.json()
       const real = c ?? 0
       const total = real < CREDIBILITY_THRESHOLD ? real + CREDIBILITY_BASE : real
       if (prevCount.current !== null && total !== prevCount.current) {
