@@ -8,7 +8,7 @@ import { supabase } from '@/lib/supabase'
 import { createClient } from '@/lib/supabase/browser'
 import type { Session, User } from '@supabase/supabase-js'
 
-import { REVIEWS_STORAGE_KEY as STORAGE_KEY, FREE_REVIEW_LIMIT as FREE_LIMIT } from '@/lib/constants'
+import { REVIEWS_STORAGE_KEY as STORAGE_KEY, FREE_REVIEW_LIMIT as FREE_LIMIT, PROMO_BONUS_KEY } from '@/lib/constants'
 
 const CREDIBILITY_BASE = 43  // shown while real count < 20
 const CREDIBILITY_THRESHOLD = 20
@@ -239,13 +239,20 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null)
   const [showPaywall, setShowPaywall] = useState(false)
   const [reviewsUsed, setReviewsUsed] = useState(0)
+  const [bonusReviews, setBonusReviews] = useState(0)
   const [user, setUser] = useState<User | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
-  useEffect(() => {
+  function readLocalStorage() {
     const stored = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
+    const bonus = parseInt(localStorage.getItem(PROMO_BONUS_KEY) || '0', 10)
     setReviewsUsed(stored)
+    setBonusReviews(bonus)
+  }
+
+  useEffect(() => {
+    readLocalStorage()
 
     // Load auth state
     const supabaseBrowser = createClient()
@@ -269,7 +276,8 @@ export default function Home() {
     // Logged-in users are gated server-side; anonymous users use localStorage
     if (!user) {
       const used = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
-      if (used >= FREE_LIMIT) {
+      const bonus = parseInt(localStorage.getItem(PROMO_BONUS_KEY) || '0', 10)
+      if (used >= FREE_LIMIT + bonus) {
         setShowPaywall(true)
         return
       }
@@ -316,11 +324,11 @@ export default function Home() {
     if (file) handleFile(file)
   }
 
-  const remaining = Math.max(0, FREE_LIMIT - reviewsUsed)
+  const remaining = Math.max(0, FREE_LIMIT + bonusReviews - reviewsUsed)
 
   return (
     <>
-      {showPaywall && <PaywallModal userId={user?.id ?? null} onClose={() => setShowPaywall(false)} />}
+      {showPaywall && <PaywallModal userId={user?.id ?? null} onClose={() => { setShowPaywall(false); readLocalStorage() }} onPromoApplied={() => { readLocalStorage(); setShowPaywall(false) }} />}
       {isUploading && <UploadOverlay />}
 
       <div className="min-h-screen bg-white flex flex-col">
