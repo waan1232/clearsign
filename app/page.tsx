@@ -137,10 +137,12 @@ function ContractsCounter() {
 // ── Pricing section ────────────────────────────────────────────────────────
 function PricingSection({ user, onPaywall }: { user: User | null; onPaywall: () => void }) {
   const [loading, setLoading] = useState<'per_review' | 'subscription' | null>(null)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
   async function startCheckout(plan: 'per_review' | 'subscription') {
     if (!user) { onPaywall(); return }
     setLoading(plan)
+    setCheckoutError(null)
     try {
       const res = await fetch('/api/create-checkout', {
         method: 'POST',
@@ -148,9 +150,10 @@ function PricingSection({ user, onPaywall }: { user: User | null; onPaywall: () 
         body: JSON.stringify({ plan }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error)
+      if (!res.ok) throw new Error(data.error || 'Checkout failed.')
       window.location.href = data.url
-    } catch {
+    } catch (err) {
+      setCheckoutError(err instanceof Error ? err.message : 'Something went wrong.')
       setLoading(null)
     }
   }
@@ -219,6 +222,11 @@ function PricingSection({ user, onPaywall }: { user: User | null; onPaywall: () 
             </button>
           </div>
         </div>
+        {checkoutError && (
+          <p className="mt-6 text-center text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-2.5 max-w-xl mx-auto">
+            {checkoutError}
+          </p>
+        )}
       </div>
     </section>
   )
