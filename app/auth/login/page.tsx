@@ -14,7 +14,7 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null)
   const [anonReviews, setAnonReviews] = useState(0)
   const searchParams = useSearchParams()
-  const rawNext = searchParams.get('next') ?? '/account'
+  const rawNext = searchParams.get('next') ?? '/auth/welcome'
   const next = rawNext.startsWith('/') ? rawNext : '/account'
 
   useEffect(() => {
