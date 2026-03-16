@@ -84,7 +84,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Could not read PDF. Please ensure it contains selectable text.' }, { status: 422 })
     }
 
-    if (!fileText || fileText.trim().length < 50) {
+    const nonWhitespaceLength = fileText.replace(/\s/g, '').length
+    if (nonWhitespaceLength < 20) {
       return NextResponse.json({ error: 'PDF appears to be empty or image-only. Please use a PDF with selectable text.' }, { status: 422 })
     }
 
