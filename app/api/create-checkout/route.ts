@@ -24,7 +24,18 @@ export async function POST(req: NextRequest) {
       mode: 'subscription',
       client_reference_id: user.id,
       customer_email: user.email,
-      line_items: [{ price: process.env.STRIPE_SUBSCRIPTION_PRICE_ID!, quantity: 1 }],
+      line_items: [{
+        quantity: 1,
+        price_data: {
+          currency: 'usd',
+          recurring: { interval: 'month' },
+          product_data: {
+            name: 'ReadThePrint - Unlimited Contract Reviews',
+            description: 'Unlimited AI contract reviews. Cancel anytime.',
+          },
+          unit_amount: 2900,
+        },
+      }],
       subscription_data: { trial_period_days: 7 },
       success_url: `${origin}/account?payment=success`,
       cancel_url: `${origin}/`,
@@ -34,7 +45,17 @@ export async function POST(req: NextRequest) {
       mode: 'payment',
       client_reference_id: user.id,
       customer_email: user.email,
-      line_items: [{ price: process.env.STRIPE_PER_REVIEW_PRICE_ID!, quantity: 1 }],
+      line_items: [{
+        quantity: 1,
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'ReadThePrint - Contract Review',
+            description: 'One AI contract review. Full clause breakdown, risk score, and plain-English summary.',
+          },
+          unit_amount: 900,
+        },
+      }],
       success_url: `${origin}/account?payment=success`,
       cancel_url: `${origin}/`,
     })
