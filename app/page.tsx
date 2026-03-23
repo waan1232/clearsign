@@ -416,15 +416,26 @@ export default function Home() {
                 </span>
               ))}
             </div>
-            <a
-              href="#upload"
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-3.5 rounded-xl text-base transition-colors shadow-sm"
-            >
-              Upload a contract - it&rsquo;s free
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-              </svg>
-            </a>
+            <div className="flex flex-wrap justify-center items-center gap-4">
+              <a
+                href="#upload"
+                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-3.5 rounded-xl text-base transition-colors shadow-sm"
+              >
+                Upload a contract - it&rsquo;s free
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                </svg>
+              </a>
+              <Link
+                href="/demo"
+                className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 font-semibold px-4 py-3.5 text-base transition-colors"
+              >
+                See a live demo
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                </svg>
+              </Link>
+            </div>
           </div>
         </section>
 
