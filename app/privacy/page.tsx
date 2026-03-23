@@ -2,7 +2,9 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | ReadThePrint',
+  title: 'Privacy Policy',
+  description: 'Read the Privacy Policy for ReadThePrint. Learn how we handle your contract data and personal information.',
+  alternates: { canonical: 'https://readtheprint.com/privacy' },
 }
 
 export default function PrivacyPage() {

@@ -2,7 +2,9 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | ReadThePrint',
+  title: 'Terms of Service',
+  description: 'Read the Terms of Service for ReadThePrint, the AI-powered contract review tool for freelancers and small businesses.',
+  alternates: { canonical: 'https://readtheprint.com/terms' },
 }
 
 export default function TermsPage() {
