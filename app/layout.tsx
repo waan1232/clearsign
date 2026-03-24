@@ -172,6 +172,8 @@ export default function RootLayout({
             <a href="/privacy" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Privacy Policy</a>
             <span className="text-slate-200">·</span>
             <a href="/help" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Help & Support</a>
+            <span className="text-slate-200">·</span>
+            <a href="/blog" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">Guides</a>
           </div>
         </footer>
       </body>
