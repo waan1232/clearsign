@@ -12,9 +12,37 @@ export const metadata: Metadata = {
   },
 }
 
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: '7 Red Flags in Freelance Contracts You Should Never Ignore',
+  description: 'These common contract clauses may look harmless but can cost freelancers thousands. Learn the 7 red flags to spot before you sign any client contract.',
+  url: 'https://readtheprint.com/blog/contract-red-flags-freelancers',
+  datePublished: '2026-03-24',
+  dateModified: '2026-03-24',
+  author: {
+    '@type': 'Organization',
+    name: 'ReadThePrint',
+    url: 'https://readtheprint.com',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'ReadThePrint',
+    url: 'https://readtheprint.com',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://readtheprint.com/opengraph-image',
+    },
+  },
+}
+
 export default function ContractRedFlagsFreelancers() {
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <nav className="border-b border-slate-200 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center gap-4">
           <Link href="/" className="text-slate-900 font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
@@ -96,6 +124,15 @@ export default function ContractRedFlagsFreelancers() {
           <Link href="/" className="inline-flex items-center gap-2 bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
             Upload a contract — it&apos;s free
           </Link>
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-slate-200">
+          <p className="text-sm font-semibold text-slate-700 mb-4">Related guides</p>
+          <div className="space-y-2">
+            <Link href="/blog/freelance-contract-review" className="block text-sm text-blue-600 hover:text-blue-700 transition-colors">How to Review a Freelance Contract: A Complete Guide</Link>
+            <Link href="/blog/how-to-read-a-contract" className="block text-sm text-blue-600 hover:text-blue-700 transition-colors">How to Read a Contract (Even If You&apos;re Not a Lawyer)</Link>
+            <Link href="/blog/how-to-review-an-nda" className="block text-sm text-blue-600 hover:text-blue-700 transition-colors">How to Review an NDA (Non-Disclosure Agreement)</Link>
+          </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-200 flex items-center gap-6 text-sm text-slate-400">
