@@ -136,7 +136,7 @@ export default function NonCompeteClauseExplained() {
           <p className="text-sm font-semibold text-slate-700 mb-4">Related guides</p>
           <div className="space-y-2">
             <Link href="/blog/how-to-review-an-nda" className="block text-sm text-blue-600 hover:text-blue-700 transition-colors">How to Review an NDA (Non-Disclosure Agreement)</Link>
-            <Link href="/blog/contract-red-flags-freelancers" className="block text-sm text-blue-600 hover:text-blue-700 transition-colors">7 Red Flags in Freelance Contracts You Should Never Ignore</Link>
+            <Link href="/blog/msa-review-checklist" className="block text-sm text-blue-600 hover:text-blue-700 transition-colors">MSA Review Checklist: What to Check Before Signing a Master Service Agreement</Link>
             <Link href="/blog/freelance-contract-review" className="block text-sm text-blue-600 hover:text-blue-700 transition-colors">How to Review a Freelance Contract: A Complete Guide</Link>
           </div>
         </div>

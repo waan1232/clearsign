@@ -12,6 +12,53 @@ export const metadata: Metadata = {
   },
 }
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is a master service agreement checklist?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A master service agreement checklist is a list of key clauses and provisions to review before signing an MSA. It covers payment terms, IP ownership, termination rights, liability caps, confidentiality obligations, non-compete restrictions, and dispute resolution — helping you identify unfair or missing protections before you sign.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What should I look for when reviewing an MSA?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'When reviewing an MSA, check: when IP transfers (should be upon payment, not delivery), whether termination rights are mutual, whether there is a liability cap protecting you, whether indemnification is one-sided, what the payment terms are and whether late payment is addressed, and whether there are any non-compete or exclusivity restrictions.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the difference between an MSA and a SOW?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'An MSA (Master Service Agreement) is a framework contract that sets the overall terms of the relationship between two parties. A SOW (Statement of Work) is a project-specific document that defines deliverables, timelines, and fees for a specific engagement. The MSA governs all SOWs under it.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What are common red flags in a Master Service Agreement?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Common red flags in an MSA include: IP transferring before payment is received, one-sided termination rights that favor the client, no liability cap for the service provider, uncapped indemnification, Net-60 or longer payment terms with no late payment penalties, broad non-compete clauses, and the client\'s right to unilaterally modify the agreement.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Do I need a lawyer to review an MSA?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'For high-value or long-term engagements, a lawyer review is recommended. For smaller engagements, an AI contract review tool like ReadThePrint can quickly flag risky clauses, unusual terms, and missing protections — giving you a starting point for negotiation before deciding whether to involve a lawyer.',
+      },
+    },
+  ],
+}
+
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -42,6 +89,10 @@ export default function MSAReviewChecklist() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <nav className="border-b border-slate-200 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center gap-4">
@@ -159,6 +210,29 @@ export default function MSAReviewChecklist() {
           </section>
 
         </div>
+
+          <section>
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">Frequently asked questions</h2>
+
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold text-slate-800 mb-2">What is a master service agreement checklist?</h3>
+                <p>A master service agreement checklist is a list of key clauses to review before signing an MSA. It covers payment terms, IP ownership, termination rights, liability caps, confidentiality, non-compete restrictions, and dispute resolution — helping you identify unfair or missing protections before you sign.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-800 mb-2">What is the difference between an MSA and a SOW?</h3>
+                <p>An MSA sets the overall terms of the relationship between two parties. A SOW (Statement of Work) is project-specific — it defines deliverables, timelines, and fees for a single engagement. The MSA governs all SOWs under it, which is why getting the MSA right matters more than any individual project contract.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-800 mb-2">What are the most common red flags in an MSA?</h3>
+                <p>IP transferring before payment, one-sided termination rights, no liability cap for the service provider, uncapped indemnification, Net-60+ payment terms with no late penalty, broad non-competes, and the client&apos;s right to modify the agreement unilaterally.</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-800 mb-2">Do I need a lawyer to review an MSA?</h3>
+                <p>For high-value or long-term engagements, yes. For smaller projects, an AI tool like ReadThePrint can quickly flag risky clauses and give you a starting point for negotiation — helping you decide whether the contract needs legal review before you invest in one.</p>
+              </div>
+            </div>
+          </section>
 
         <div className="mt-12 p-6 bg-blue-50 rounded-xl border border-blue-100">
           <p className="text-slate-800 font-semibold mb-2">Have an MSA to review?</p>
