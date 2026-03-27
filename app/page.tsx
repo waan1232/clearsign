@@ -346,9 +346,9 @@ export default function Home() {
         {/* ── Nav ────────────────────────────────────────────── */}
         <nav className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-sm px-6 py-4">
           <div className="max-w-6xl mx-auto flex items-center justify-between">
-            <span className="text-slate-900 font-bold text-xl tracking-tight">
+            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-slate-900 font-bold text-xl tracking-tight hover:opacity-80 transition-opacity cursor-pointer">
               ReadThe<span className="text-blue-600">Print</span>
-            </span>
+            </button>
             <div className="flex items-center gap-6">
               {!user && reviewsUsed > 0 && remaining > 0 && (
                 <span className="hidden sm:block text-xs text-slate-400">
