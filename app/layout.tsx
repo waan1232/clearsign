@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: "ReadThePrint | AI Contract Reviewer",
     template: "%s | ReadThePrint",
   },
-  description: "Upload any contract and get a plain-English breakdown of risky clauses in seconds. AI-powered contract review for small businesses and freelancers. Free to try, no account needed.",
+  description: "AI-powered contract review for freelancers and small businesses. Upload any PDF and get a plain-English breakdown of risky clauses in seconds. Free to try.",
   metadataBase: new URL(url),
   keywords: [
     "AI freelance contract reviewer",

@@ -116,6 +116,7 @@ export default function HowToReviewAnNDA() {
           <section>
             <h2 className="text-2xl font-bold text-slate-900 mb-4">When to get a lawyer involved</h2>
             <p>Most NDAs signed before a freelance project or a job interview are low-stakes — a reasonable NDA with reasonable terms. Reading it carefully yourself (or using a tool like ReadThePrint to flag the concerning parts) is usually sufficient.</p>
+            <p className="mt-3">For a plain-English overview of how NDAs work under U.S. law, the <a href="https://www.law.cornell.edu/wex/nondisclosure_agreement" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 underline">Cornell Law School Legal Information Institute</a> is a good reference.</p>
             <p className="mt-3">But you should involve a lawyer when:</p>
             <ul className="list-disc list-inside mt-2 space-y-2">
               <li>The NDA is connected to a major deal (acquisition, licensing, significant partnership)</li>
