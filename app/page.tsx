@@ -336,8 +336,22 @@ export default function Home() {
 
   const remaining = Math.max(0, FREE_LIMIT + bonusReviews - reviewsUsed)
 
+  const homepageFaqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Is ReadThePrint free to use?', acceptedAnswer: { '@type': 'Answer', text: 'Yes — your first 2 contract reviews are completely free with no account required. After that, you can pay $9 per review or $29/month for unlimited reviews with a 7-day free trial.' } },
+      { '@type': 'Question', name: 'What types of contracts can ReadThePrint review?', acceptedAnswer: { '@type': 'Answer', text: 'ReadThePrint works with any PDF contract including NDAs, MSAs (Master Service Agreements), freelance agreements, service contracts, employment agreements, and lease agreements.' } },
+      { '@type': 'Question', name: 'How long does an AI contract review take?', acceptedAnswer: { '@type': 'Answer', text: 'Most contract reviews are completed in 15–30 seconds. You get a full clause-by-clause breakdown, a risk score from 1–10, and plain-English explanations of every risky term.' } },
+      { '@type': 'Question', name: 'Do I need an account to review a contract?', acceptedAnswer: { '@type': 'Answer', text: 'No account is required for your first 2 free reviews. Simply upload your PDF and get instant results. An account is only needed if you want to save your reviews or purchase additional credits.' } },
+      { '@type': 'Question', name: 'Is my contract kept private?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Your contracts are processed securely and are never shared with third parties or used to train AI models. ReadThePrint is not a law firm and does not provide legal advice.' } },
+      { '@type': 'Question', name: 'What risky clauses does ReadThePrint flag?', acceptedAnswer: { '@type': 'Answer', text: 'ReadThePrint flags unfair termination clauses, overreaching NDAs and non-competes, one-sided IP ownership, asymmetric liability terms, buried payment conditions, and other clauses that commonly disadvantage freelancers and small businesses.' } },
+    ],
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageFaqJsonLd) }} />
       {showPaywall && <PaywallModal userId={user?.id ?? null} onClose={() => { setShowPaywall(false); readLocalStorage() }} onPromoApplied={() => { readLocalStorage(); setShowPaywall(false) }} />}
       {isUploading && <UploadOverlay />}
 
