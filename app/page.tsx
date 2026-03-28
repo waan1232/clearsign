@@ -349,13 +349,13 @@ export default function Home() {
             <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-slate-900 font-bold text-xl tracking-tight hover:opacity-80 transition-opacity cursor-pointer">
               ReadThe<span className="text-blue-600">Print</span>
             </button>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 sm:gap-6">
               {!user && reviewsUsed > 0 && remaining > 0 && (
                 <span className="hidden sm:block text-xs text-slate-400">
                   {remaining} free review{remaining !== 1 ? 's' : ''} remaining
                 </span>
               )}
-              <a href="#pricing" className="text-sm text-slate-600 hover:text-slate-900 transition-colors font-medium">
+              <a href="#pricing" className="hidden sm:block text-sm text-slate-600 hover:text-slate-900 transition-colors font-medium">
                 Pricing
               </a>
               {user ? (
