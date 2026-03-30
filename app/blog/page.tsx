@@ -14,6 +14,12 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'saas-agreement-checklist',
+    title: 'SaaS Agreement Checklist: What to Review Before Signing',
+    description: 'Data ownership, auto-renewal traps, SLA terms, liability caps, and termination rights — what to check in any SaaS agreement before you commit.',
+    date: 'March 2026',
+  },
+  {
     slug: 'freelance-contract-review',
     title: 'How to Review a Freelance Contract: A Complete Guide',
     description: 'Everything freelancers need to know before signing a client contract — from payment terms to IP ownership to kill fees.',

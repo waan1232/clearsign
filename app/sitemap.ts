@@ -54,7 +54,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${url}/blog/non-compete-clause-explained`,
-      lastModified: new Date('2026-03-24'),
+      lastModified: new Date('2026-03-30'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${url}/blog/saas-agreement-checklist`,
+      lastModified: new Date('2026-03-30'),
       changeFrequency: 'monthly',
       priority: 0.8,
     },

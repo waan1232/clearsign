@@ -12,6 +12,61 @@ export const metadata: Metadata = {
   },
 }
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is a non-compete clause?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A non-compete clause (also called a covenant not to compete) is a contract provision that restricts you from working for competitors or starting a competing business for a defined period after the contract ends. They appear in employment contracts, freelance agreements, and consulting contracts.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Are non-compete clauses enforceable?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'It depends on the state. California, Minnesota, North Dakota, and Oklahoma generally do not enforce non-competes. Most other states enforce them if the duration, geographic scope, and restricted activities are reasonable. Courts increasingly refuse to enforce broad or one-sided non-competes.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What makes a non-compete clause unenforceable?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Common reasons a non-compete is unenforceable: the duration is too long (courts often reject restrictions beyond 1–2 years), the geographic scope is unlimited or worldwide, the definition of "competitor" is vague or covers your entire profession, or the state where you work does not allow non-competes.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How long can a non-compete clause last?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Courts generally view non-competes of 6 months to 1 year as reasonable for most engagements. Restrictions of 2 years or more are subject to more scrutiny, and anything over 3–5 years is rarely enforced, especially for freelancers and independent contractors.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can a freelancer refuse to sign a non-compete?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. Freelancers can and should push back on unreasonable non-competes. You can negotiate to reduce the duration, narrow the scope to specific named competitors, add a geographic limit, or remove the clause entirely if it is not appropriate to the engagement. Courts also scrutinize non-competes more strictly for independent contractors than for full-time employees.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the difference between a non-compete and a non-solicitation clause?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A non-compete restricts you from working for competitors or starting a competing business. A non-solicitation clause restricts you from poaching clients or employees from a former employer or client. Non-solicitation clauses are generally narrower and easier to enforce than non-competes.',
+      },
+    },
+  ],
+}
+
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -42,6 +97,10 @@ export default function NonCompeteClauseExplained() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <nav className="border-b border-slate-200 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center gap-4">
@@ -123,6 +182,36 @@ export default function NonCompeteClauseExplained() {
           </section>
 
         </div>
+
+        <section className="mt-12">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">Frequently asked questions</h2>
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">What is a non-compete clause?</h3>
+              <p className="text-slate-600">A non-compete clause (also called a covenant not to compete) is a contract provision that restricts you from working for competitors or starting a competing business for a defined period after the contract ends. They appear in employment contracts, freelance agreements, and consulting contracts.</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">Are non-compete clauses enforceable?</h3>
+              <p className="text-slate-600">It depends on the state. California, Minnesota, North Dakota, and Oklahoma generally do not enforce non-competes. Most other states enforce them if the duration, geographic scope, and restricted activities are reasonable. Courts increasingly refuse to enforce broad or one-sided non-competes.</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">What makes a non-compete clause unenforceable?</h3>
+              <p className="text-slate-600">Common reasons: the duration is too long (courts often reject restrictions beyond 1–2 years), the geographic scope is unlimited or worldwide, the definition of &quot;competitor&quot; is vague or covers your entire profession, or the state where you work does not allow non-competes.</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">How long can a non-compete clause last?</h3>
+              <p className="text-slate-600">Courts generally view non-competes of 6 months to 1 year as reasonable. Restrictions of 2 years or more are subject to more scrutiny, and anything over 3–5 years is rarely enforced — especially for freelancers and independent contractors.</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">Can a freelancer refuse to sign a non-compete?</h3>
+              <p className="text-slate-600">Yes. You can negotiate to reduce the duration, narrow the scope to specific named competitors, add a geographic limit, or remove it entirely. Courts scrutinize non-competes more strictly for independent contractors than for full-time employees, so you have more leverage than you think.</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800 mb-2">What is the difference between a non-compete and a non-solicitation clause?</h3>
+              <p className="text-slate-600">A non-compete restricts you from working for competitors or starting a competing business. A non-solicitation clause restricts you from poaching clients or employees from a former employer or client. Non-solicitation clauses are generally narrower and easier to enforce than non-competes.</p>
+            </div>
+          </div>
+        </section>
 
         <div className="mt-12 p-6 bg-blue-50 rounded-xl border border-blue-100">
           <p className="text-slate-800 font-semibold mb-2">See what&apos;s in your contract</p>
